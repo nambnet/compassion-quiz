@@ -63,7 +63,7 @@ body {
 
 .pill-border-inner {
   position: absolute;
-  top: 0; left: 0; right: 0; bottom: 0;
+  top: 25%; left: 0; right: 0; bottom: 25%;
   border-left: 5px solid var(--pill-color);
   border-right: 5px solid var(--pill-color);
 }
@@ -74,19 +74,18 @@ body {
   position: absolute;
   left: -5px;
   right: -5px;
-  height: 0;
-  padding-bottom: 50%;
+  aspect-ratio: 2 / 1;
 }
 
 .pill-border-inner::before {
-  top: 0;
+  bottom: 100%;
   border-radius: 9999px 9999px 0 0;
   border: 5px solid var(--pill-color);
   border-bottom: none;
 }
 
 .pill-border-inner::after {
-  bottom: 0;
+  top: 100%;
   border-radius: 0 0 9999px 9999px;
   border: 5px solid var(--pill-color);
   border-top: none;
@@ -94,7 +93,7 @@ body {
 
 .pill-border-outer {
   position: absolute;
-  top: -12px; left: -12px; right: -12px; bottom: -12px;
+  top: calc(25% - 12px); left: -12px; right: -12px; bottom: calc(25% - 12px);
   border-left: 2.5px solid var(--pill-color);
   border-right: 2.5px solid var(--pill-color);
 }
@@ -105,19 +104,18 @@ body {
   position: absolute;
   left: -2.5px;
   right: -2.5px;
-  height: 0;
-  padding-bottom: 50%;
+  aspect-ratio: 2 / 1;
 }
 
 .pill-border-outer::before {
-  top: 0;
+  bottom: 100%;
   border-radius: 9999px 9999px 0 0;
   border: 2.5px solid var(--pill-color);
   border-bottom: none;
 }
 
 .pill-border-outer::after {
-  bottom: 0;
+  top: 100%;
   border-radius: 0 0 9999px 9999px;
   border: 2.5px solid var(--pill-color);
   border-top: none;
