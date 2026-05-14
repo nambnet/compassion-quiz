@@ -34,12 +34,13 @@ body {
   line-height: 1.6;
 }
 
-/* Pill Border Frame — double-stroke with half-circle caps */
+/* Pill Border Frame — half-circle caps, straight sides (stadium shape) */
 .pill-frame {
   --pill-color: #ccc;
-  max-width: 800px;
+  --pill-width: 800px;
+  max-width: var(--pill-width);
   margin: 24px auto;
-  border-radius: 400px / 50%;
+  border-radius: calc(var(--pill-width) / 2);
   border: 3px solid var(--pill-color);
   outline: 3px solid var(--pill-color);
   outline-offset: 8px;
@@ -563,7 +564,7 @@ body.dark .progress-wrap {
 /* Mobile */
 @media (max-width: 600px) {
   .quiz-container { padding: 30px 20px; }
-  .pill-frame { margin: 12px; border-radius: 400px / 50%; outline-offset: 6px; border-width: 2px; outline-width: 2px; }
+  .pill-frame { margin: 12px; border-radius: 50vw; outline-offset: 6px; border-width: 2px; outline-width: 2px; }
   .question-text { font-size: 1.3rem; }
   .answer-card { padding: 14px 16px; font-size: 0.9rem; }
   .checkbox-grid { grid-template-columns: 1fr; }
