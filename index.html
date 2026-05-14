@@ -34,23 +34,85 @@ body {
   line-height: 1.6;
 }
 
-/* Pill Border Frame — half-circle caps, straight sides (stadium shape) */
+/* Pill Border Frame — stadium shape: semicircle top/bottom, straight sides */
 .pill-frame {
   --pill-color: #ccc;
-  --pill-width: 800px;
-  max-width: var(--pill-width);
+  max-width: 800px;
   margin: 24px auto;
-  border-radius: calc(var(--pill-width) / 2);
-  border: 3px solid var(--pill-color);
-  outline: 3px solid var(--pill-color);
-  outline-offset: 8px;
   position: relative;
   min-height: calc(100vh - 48px);
-  overflow: hidden;
+  padding: 0;
+}
+
+.pill-frame::before,
+.pill-frame::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  pointer-events: none;
+}
+
+/* Outer border using two pseudo-elements on a wrapper */
+.pill-border {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.pill-border-inner,
+.pill-border-outer {
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  border-left: 3px solid var(--pill-color);
+  border-right: 3px solid var(--pill-color);
+}
+
+.pill-border-inner::before,
+.pill-border-inner::after,
+.pill-border-outer::before,
+.pill-border-outer::after {
+  content: '';
+  position: absolute;
+  left: -3px;
+  right: -3px;
+  height: 0;
+  padding-bottom: 50%;
+  border: 3px solid var(--pill-color);
+  border-bottom: none;
+}
+
+.pill-border-inner::before,
+.pill-border-outer::before {
+  top: 0;
+  border-radius: 9999px 9999px 0 0;
+}
+
+.pill-border-inner::after,
+.pill-border-outer::after {
+  bottom: 0;
+  border-radius: 0 0 9999px 9999px;
+  border: 3px solid var(--pill-color);
+  border-top: none;
+}
+
+.pill-border-outer {
+  top: -11px; left: -11px; right: -11px; bottom: -11px;
+}
+
+.pill-border-outer::before,
+.pill-border-outer::after {
+  left: -3px;
+  right: -3px;
 }
 
 body.dark .pill-frame {
   --pill-color: #444;
+}
+
+.pill-frame {
+  overflow: visible;
 }
 
 .quiz-container {
@@ -564,7 +626,11 @@ body.dark .progress-wrap {
 /* Mobile */
 @media (max-width: 600px) {
   .quiz-container { padding: 30px 20px; }
-  .pill-frame { margin: 12px; border-radius: 50vw; outline-offset: 6px; border-width: 2px; outline-width: 2px; }
+  .pill-frame { margin: 16px; }
+  .pill-border-inner, .pill-border-outer { border-width: 2px; }
+  .pill-border-inner::before, .pill-border-inner::after,
+  .pill-border-outer::before, .pill-border-outer::after { border-width: 2px; }
+  .pill-border-outer { top: -9px; left: -9px; right: -9px; bottom: -9px; }
   .question-text { font-size: 1.3rem; }
   .answer-card { padding: 14px 16px; font-size: 0.9rem; }
   .checkbox-grid { grid-template-columns: 1fr; }
@@ -577,6 +643,10 @@ body.dark .progress-wrap {
 <button class="dark-toggle" id="dark-toggle" aria-label="Toggle dark mode">&#9790;</button>
 
 <div class="pill-frame">
+  <div class="pill-border">
+    <div class="pill-border-inner"></div>
+    <div class="pill-border-outer"></div>
+  </div>
 <div class="quiz-container">
 
   <!-- Header -->
