@@ -528,18 +528,18 @@ body.dark .progress-wrap {
   display: block;
 }
 
-/* Body-level ghost icon behind pill container on results */
+/* Body-level ghost icon — only visible outside the pill */
 #body-ghost {
   display: none;
   position: fixed;
-  top: -10%;
-  left: -10%;
-  width: 120%;
-  height: 120%;
-  opacity: 0.15;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0.12;
   pointer-events: none;
   z-index: 0;
-  background-size: contain;
+  background-size: 80% auto;
   background-repeat: no-repeat;
   background-position: center;
 }
@@ -549,12 +549,17 @@ body.dark .progress-wrap {
 }
 
 body.dark #body-ghost {
-  opacity: 0.08;
+  opacity: 0.06;
 }
 
 .pill-frame {
   position: relative;
   z-index: 1;
+  background: var(--cream);
+}
+
+body.dark .pill-frame {
+  background: #1A1A1A;
 }
 
 .result-graphic {
