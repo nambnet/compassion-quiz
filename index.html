@@ -1,0 +1,801 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Compassion Profile Quiz | Send Relief</title>
+<meta name="description" content="How God Shaped You to Care for a Broken World. Take the quiz to discover your compassion profile.">
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@400;500;600&display=swap');
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --navy: #1B2A4A;
+  --cream: #FAF7F2;
+  --responder-bg: #8EA4BE;
+  --responder-dark: #4A6381;
+  --protector-bg: #4A6B5A;
+  --protector-dark: #2D4A3A;
+  --champion-bg: #C4969A;
+  --champion-dark: #6B3A3F;
+  --visionary-bg: #6B8494;
+  --visionary-dark: #3A5464;
+  --mentor-bg: #D4A843;
+  --mentor-dark: #8B6F1E;
+  --transition: 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+body {
+  font-family: 'Inter', sans-serif;
+  background: var(--cream);
+  color: var(--navy);
+  min-height: 100vh;
+  line-height: 1.6;
+}
+
+.quiz-container {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 20px;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Header */
+.quiz-header {
+  text-align: center;
+  padding: 40px 0 20px;
+}
+
+.quiz-header img {
+  max-width: 100%;
+  height: auto;
+  max-height: 200px;
+}
+
+/* Progress Bar */
+.progress-wrap {
+  width: 100%;
+  height: 6px;
+  background: #e0dbd4;
+  border-radius: 3px;
+  margin: 20px 0 30px;
+  overflow: hidden;
+}
+
+.progress-bar {
+  height: 100%;
+  background: var(--navy);
+  border-radius: 3px;
+  width: 0%;
+  transition: width var(--transition);
+}
+
+/* Steps */
+.step {
+  display: none;
+  animation: fadeIn 0.4s ease;
+}
+
+.step.active {
+  display: block;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(12px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.step-label {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #8B8279;
+  margin-bottom: 8px;
+}
+
+.question-text {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.6rem;
+  font-weight: 600;
+  line-height: 1.35;
+  color: var(--navy);
+  margin-bottom: 24px;
+}
+
+/* Answer Cards */
+.answers {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.answer-card {
+  display: block;
+  width: 100%;
+  text-align: left;
+  background: #fff;
+  border: 2px solid #e0dbd4;
+  border-radius: 12px;
+  padding: 16px 20px;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.95rem;
+  line-height: 1.5;
+  color: var(--navy);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+.answer-card:hover {
+  border-color: var(--navy);
+  background: #f5f2ec;
+}
+
+.answer-card.selected {
+  border-color: var(--navy);
+  background: var(--navy);
+  color: #fff;
+}
+
+/* Section headers */
+.section-intro {
+  text-align: center;
+  padding: 20px 0;
+}
+
+.section-intro h2 {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.8rem;
+  font-weight: 700;
+  margin-bottom: 10px;
+}
+
+.section-intro p {
+  font-size: 0.95rem;
+  color: #6B6560;
+  max-width: 480px;
+  margin: 0 auto;
+}
+
+/* Checkbox cards (Q7) */
+.checkbox-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.checkbox-card {
+  display: block;
+  text-align: center;
+  background: #fff;
+  border: 2px solid #e0dbd4;
+  border-radius: 12px;
+  padding: 14px 12px;
+  font-size: 0.85rem;
+  line-height: 1.4;
+  color: var(--navy);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.checkbox-card:hover {
+  border-color: var(--navy);
+}
+
+.checkbox-card.selected {
+  border-color: var(--navy);
+  background: var(--navy);
+  color: #fff;
+}
+
+/* Navigation */
+.nav-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: auto;
+  padding: 20px 0 40px;
+}
+
+.btn-back {
+  background: none;
+  border: none;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.9rem;
+  color: #8B8279;
+  cursor: pointer;
+  padding: 10px 0;
+}
+
+.btn-back:hover { color: var(--navy); }
+
+.btn-next {
+  background: var(--navy);
+  color: #fff;
+  border: none;
+  border-radius: 50px;
+  padding: 14px 36px;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  opacity: 0.4;
+  pointer-events: none;
+}
+
+.btn-next.enabled {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.btn-next:hover { background: #2a3d63; }
+
+/* Email capture form */
+.capture-form {
+  margin-top: 20px;
+}
+
+.capture-form label {
+  display: block;
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: #6B6560;
+  margin-bottom: 4px;
+}
+
+.capture-form input[type="text"],
+.capture-form input[type="email"] {
+  width: 100%;
+  padding: 14px 16px;
+  border: 2px solid #e0dbd4;
+  border-radius: 10px;
+  font-family: 'Inter', sans-serif;
+  font-size: 1rem;
+  color: var(--navy);
+  background: #fff;
+  margin-bottom: 14px;
+  transition: border-color 0.2s;
+}
+
+.capture-form input:focus {
+  outline: none;
+  border-color: var(--navy);
+}
+
+.consent-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  margin: 16px 0;
+  font-size: 0.85rem;
+  color: #6B6560;
+}
+
+.consent-row input[type="checkbox"] {
+  margin-top: 3px;
+  width: 18px;
+  height: 18px;
+  accent-color: var(--navy);
+}
+
+.btn-submit {
+  width: 100%;
+  background: var(--navy);
+  color: #fff;
+  border: none;
+  border-radius: 50px;
+  padding: 16px;
+  font-family: 'Inter', sans-serif;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  margin-top: 10px;
+}
+
+.btn-submit:hover { background: #2a3d63; }
+.btn-submit:disabled { opacity: 0.4; pointer-events: none; }
+
+/* Results */
+.result-page {
+  display: none;
+  text-align: center;
+  animation: fadeIn 0.6s ease;
+}
+
+.result-page.active {
+  display: block;
+}
+
+.result-graphic {
+  width: 100%;
+  max-width: 600px;
+  border-radius: 16px;
+  margin: 0 auto 24px;
+  display: block;
+}
+
+.result-body {
+  text-align: left;
+  max-width: 560px;
+  margin: 0 auto;
+}
+
+.result-body h2 {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.8rem;
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+
+.result-body .traits {
+  font-weight: 600;
+  font-size: 0.9rem;
+  letter-spacing: 0.05em;
+  margin-bottom: 16px;
+}
+
+.result-body p {
+  margin-bottom: 14px;
+  font-size: 0.95rem;
+}
+
+.result-body h3 {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.3rem;
+  font-weight: 700;
+  margin: 24px 0 8px;
+}
+
+.result-body ul {
+  padding-left: 20px;
+  margin-bottom: 14px;
+}
+
+.result-body li {
+  font-size: 0.95rem;
+  margin-bottom: 6px;
+}
+
+/* Loading spinner */
+.spinner {
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  border: 3px solid rgba(255,255,255,0.3);
+  border-top: 3px solid #fff;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+  vertical-align: middle;
+  margin-right: 8px;
+}
+
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* Mobile */
+@media (max-width: 600px) {
+  .quiz-container { padding: 16px; }
+  .question-text { font-size: 1.3rem; }
+  .answer-card { padding: 14px 16px; font-size: 0.9rem; }
+  .checkbox-grid { grid-template-columns: 1fr; }
+  .quiz-header { padding: 20px 0 10px; }
+}
+</style>
+</head>
+<body>
+
+<div class="quiz-container">
+
+  <!-- Header -->
+  <div class="quiz-header">
+    <img src="header-graphic.jpg" alt="The Compassion Profile Quiz" id="header-img">
+  </div>
+
+  <!-- Progress -->
+  <div class="progress-wrap">
+    <div class="progress-bar" id="progress"></div>
+  </div>
+
+  <!-- STEP 1: Q1 -->
+  <div class="step active" data-step="1">
+    <div class="step-label">Question 1 of 7</div>
+    <div class="question-text">You're watching a movie or reading a novel. Which moment in a story gets you every time?</div>
+    <div class="answers" data-field="q1">
+      <button class="answer-card" data-value="responder">The big rescue scene, when unexpected help swoops in just as all hope feels lost.</button>
+      <button class="answer-card" data-value="protector">The sacrificial tradeoff, when someone runs to save someone else in grave danger.</button>
+      <button class="answer-card" data-value="champion">The rallying scene, when one person gives a speech that unites and energizes everyone before the big battle.</button>
+      <button class="answer-card" data-value="visionary">The redemptive ending, when everything that was broken is finally made right.</button>
+      <button class="answer-card" data-value="mentor">The underdog empowerment, when someone sees potential in someone else and steps into their life in a powerful way.</button>
+    </div>
+  </div>
+
+  <!-- STEP 2: Q2 -->
+  <div class="step" data-step="2">
+    <div class="step-label">Question 2 of 7</div>
+    <div class="question-text">A new family moves in next door. What's the first thing you do?</div>
+    <div class="answers" data-field="q2">
+      <button class="answer-card" data-value="responder">You show up with a meal ASAP and ask, "What else do you need? How else can I help?"</button>
+      <button class="answer-card" data-value="protector">You ask what brought them here. If it was a tough situation, you want them to know you're in their corner.</button>
+      <button class="answer-card" data-value="champion">You ask if they know anyone else in the neighborhood. If not, you get them connected to the neighborhood social media group, book club, and game nights.</button>
+      <button class="answer-card" data-value="visionary">You ask if they have family nearby. If not, you consider how to help them feel rooted here (church, school, etc.).</button>
+      <button class="answer-card" data-value="mentor">You ask when they're free for dinner. Once they get settled in, you'd love to have them over to really get to know them.</button>
+    </div>
+  </div>
+
+  <!-- STEP 3: Q3 -->
+  <div class="step" data-step="3">
+    <div class="step-label">Question 3 of 7</div>
+    <div class="question-text">Every friend group has "that person." Which role do you usually end up in?</div>
+    <div class="answers" data-field="q3">
+      <button class="answer-card" data-value="responder">The group mom. You're the one making sure everyone is fed, cared for, and not forgotten when something comes up.</button>
+      <button class="answer-card" data-value="protector">The vibe protector. You notice when something's off and step in to make sure no one gets overlooked or left out.</button>
+      <button class="answer-card" data-value="champion">The cruise director. You're the one organizing the group text, keeping everyone in the loop, and keeping things in motion.</button>
+      <button class="answer-card" data-value="visionary">The tradition setter. You're thinking ahead, creating rhythms, and doing the work now so that your friendship stays strong in the long run.</button>
+      <button class="answer-card" data-value="mentor">The big sister. People open up to you. You're the one they trust when personal things get hard.</button>
+    </div>
+  </div>
+
+  <!-- STEP 4: Q4 -->
+  <div class="step" data-step="4">
+    <div class="step-label">Question 4 of 7</div>
+    <div class="question-text">Be honest — what's a frustrating thought you've had about people in general before?</div>
+    <div class="answers" data-field="q4">
+      <button class="answer-card" data-value="responder">"In an emergency, why won't people stop what they're doing to help?"</button>
+      <button class="answer-card" data-value="protector">"Why won't anyone step in to help this person in a terrible situation?"</button>
+      <button class="answer-card" data-value="champion">"Why aren't more people speaking out about this?"</button>
+      <button class="answer-card" data-value="visionary">"Why do we keep trying to fix the symptoms instead of the root issues?"</button>
+      <button class="answer-card" data-value="mentor">"Why hasn't anyone taken the time to walk alongside them in this?"</button>
+    </div>
+  </div>
+
+  <!-- STEP 5: Q5 -->
+  <div class="step" data-step="5">
+    <div class="step-label">Question 5 of 7</div>
+    <div class="question-text">You overhear someone saying something nice about you. Which compliment would mean the most to you?</div>
+    <div class="answers" data-field="q5">
+      <button class="answer-card" data-value="responder">"She's so dependable. She's the first one you call if something goes wrong."</button>
+      <button class="answer-card" data-value="protector">"She's so giving. She'll step in to care for someone even when it costs her."</button>
+      <button class="answer-card" data-value="champion">"She's so energizing. She gets others to care and take action."</button>
+      <button class="answer-card" data-value="visionary">"She's so steady. She doesn't give up until the task is accomplished."</button>
+      <button class="answer-card" data-value="mentor">"She's so intentional. She helps others grow."</button>
+    </div>
+  </div>
+
+  <!-- STEP 6: Q6 (Focus Area) -->
+  <div class="step" data-step="6">
+    <div class="section-intro">
+      <h2>Where Is God Drawing Your Attention?</h2>
+      <p>These questions help us personalize your follow-up content. They do not affect your profile result.</p>
+    </div>
+    <div class="step-label">Question 6 of 7</div>
+    <div class="question-text">In this season, where do you sense Him drawing your attention?</div>
+    <div class="answers" data-field="focus_area">
+      <button class="answer-card" data-value="strengthen_communities">Strengthen Communities: clean water, education, and sustainable change</button>
+      <button class="answer-card" data-value="protect_children_families">Protect Children and Families: foster care, adoption, and vulnerable family support</button>
+      <button class="answer-card" data-value="care_for_refugees">Care for Refugees: practical support for displaced families rebuilding their lives</button>
+      <button class="answer-card" data-value="fight_human_trafficking">Fight Human Trafficking: prevention, rescue, and restoration for survivors</button>
+      <button class="answer-card" data-value="respond_to_crisis">Respond to Crisis: immediate relief when disaster or conflict strikes</button>
+    </div>
+  </div>
+
+  <!-- STEP 7: Q7 (Regions) -->
+  <div class="step" data-step="7">
+    <div class="step-label">Question 7 of 7</div>
+    <div class="question-text">When you think about other places, where do you feel stirred to step in and help? (Choose all that apply.)</div>
+    <div class="checkbox-grid" data-field="regions">
+      <button class="checkbox-card" data-value="urban_communities">Urban communities</button>
+      <button class="checkbox-card" data-value="rural_indigenous">Rural &amp; Indigenous communities</button>
+      <button class="checkbox-card" data-value="border_communities">Border communities</button>
+      <button class="checkbox-card" data-value="caribbean_communities">Caribbean communities</button>
+      <button class="checkbox-card" data-value="northern_africa_middle_east">Northern Africa &amp; Middle East</button>
+      <button class="checkbox-card" data-value="sub_saharan_africa">Sub-Saharan Africa</button>
+      <button class="checkbox-card" data-value="europe">Europe</button>
+      <button class="checkbox-card" data-value="latin_south_america">Latin &amp; South America</button>
+      <button class="checkbox-card" data-value="south_asia">South Asia</button>
+      <button class="checkbox-card" data-value="asia_pacific">Asia-Pacific Rim</button>
+      <button class="checkbox-card" data-value="central_asia">Central Asia</button>
+      <button class="checkbox-card" data-value="global_deaf">Global Deaf Community</button>
+    </div>
+  </div>
+
+  <!-- STEP 8: Email Capture -->
+  <div class="step" data-step="8">
+    <div class="section-intro">
+      <h2>Get Your Full Results</h2>
+      <p>Enter your info to receive your full Compassion Profile results and a personalized five-day devotional.</p>
+    </div>
+    <div class="capture-form">
+      <label for="cpq-first">First Name</label>
+      <input type="text" id="cpq-first" name="firstname" required>
+      <label for="cpq-last">Last Name</label>
+      <input type="text" id="cpq-last" name="lastname" required>
+      <label for="cpq-email">Email</label>
+      <input type="email" id="cpq-email" name="email" required>
+      <div class="consent-row">
+        <input type="checkbox" id="cpq-consent">
+        <label for="cpq-consent">Yes, I agree to receive emails about my Compassion Profile from Send Relief</label>
+      </div>
+      <button class="btn-submit" id="btn-submit" disabled>Send me my results &amp; devotional</button>
+    </div>
+  </div>
+
+  <!-- RESULTS (5 profiles, shown after submit) -->
+  <div class="result-page" id="result-responder">
+    <img src="result-responder.jpg" alt="The Responder" class="result-graphic">
+    <div class="result-body">
+      <p>You notice needs quickly and move toward them without hesitation. Whether someone is hurting, celebrating, or simply in need of support, you step in with care, presence, and practical help. You don't wait to be asked. You respond.</p>
+      <p><strong>Biblical Anchor: Tabitha</strong></p>
+      <h3>There's more for you.</h3>
+      <p>Check your email for your full results + a five-day devotional made for you.</p>
+      <ul>
+        <li>What Tabitha's story reveals about your compassion</li>
+        <li>The tension you may be carrying and how to bring it before God</li>
+        <li>Your next step for living this out right now</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="result-page" id="result-protector">
+    <img src="result-protector.jpg" alt="The Protector" class="result-graphic">
+    <div class="result-body">
+      <p>You're the one who notices when something isn't right. When someone is in a vulnerable situation, dismissed, or at risk, something in you rises up. You don't walk away from people who need someone in their corner. You step in, you speak up, and you stay.</p>
+      <p><strong>Biblical Anchor: Esther</strong></p>
+      <h3>There's more for you.</h3>
+      <p>Check your email for your full results + a five-day devotional made for you.</p>
+      <ul>
+        <li>What Esther's story reveals about your compassion</li>
+        <li>The tension you may be carrying and how to bring it before God</li>
+        <li>Your next step for living this out right now</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="result-page" id="result-champion">
+    <img src="result-champion.jpg" alt="The Champion" class="result-graphic">
+    <div class="result-body">
+      <p>You're the one who names what others won't. When something moves your heart, you can't stay quiet. You help people understand what's happening, why it matters, and what they can do — through your words, your relationships, and the way you tell a story.</p>
+      <p><strong>Biblical Anchor: Deborah</strong></p>
+      <h3>There's more for you.</h3>
+      <p>Check your email for your full results + a five-day devotional made for you.</p>
+      <ul>
+        <li>What Deborah's story reveals about your compassion</li>
+        <li>The tension you may be carrying and how to bring it before God</li>
+        <li>Your next step for living this out right now</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="result-page" id="result-visionary">
+    <img src="result-visionary.jpg" alt="The Visionary" class="result-graphic">
+    <div class="result-body">
+      <p>You're the one who sees what could be. When something is broken, you don't just feel sad about it — you start thinking about how to fix it. You care about lasting change, not quick fixes, and you're willing to stay in a hard place long enough to see something new take shape.</p>
+      <p><strong>Biblical Anchor: Lydia</strong></p>
+      <h3>There's more for you.</h3>
+      <p>Check your email for your full results + a five-day devotional made for you.</p>
+      <ul>
+        <li>What Lydia's story reveals about your compassion</li>
+        <li>The tension you may be carrying and how to bring it before God</li>
+        <li>Your next step for living this out right now</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="result-page" id="result-mentor">
+    <img src="result-mentor.jpg" alt="The Mentor" class="result-graphic">
+    <div class="result-body">
+      <p>You pay attention to people. You care deeply about spiritual growth and create space for discipleship and community. You notice what God is doing in someone and help draw it out, offering encouragement and truth so they can step into what God is calling them to do.</p>
+      <p><strong>Biblical Anchor: Priscilla</strong></p>
+      <h3>There's more for you.</h3>
+      <p>Check your email for your full results + a five-day devotional made for you.</p>
+      <ul>
+        <li>What Priscilla's story reveals about your compassion</li>
+        <li>The tension you may be carrying and how to bring it before God</li>
+        <li>Your next step for living this out right now</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- Nav (hidden on results) -->
+  <div class="nav-row" id="nav-row">
+    <button class="btn-back" id="btn-back" style="visibility:hidden">Back</button>
+    <button class="btn-next" id="btn-next">Next</button>
+  </div>
+
+</div>
+
+<script>
+(function() {
+  var PORTAL_ID = '661334';
+  var FORM_ID = 'c84ae902-507a-445e-b512-1c085d04eb0c';
+  var TOTAL_STEPS = 8;
+
+  var currentStep = 1;
+  var answers = {};
+  var regions = [];
+
+  var steps = document.querySelectorAll('.step');
+  var progress = document.getElementById('progress');
+  var btnNext = document.getElementById('btn-next');
+  var btnBack = document.getElementById('btn-back');
+  var navRow = document.getElementById('nav-row');
+  var btnSubmit = document.getElementById('btn-submit');
+
+  function showStep(n) {
+    steps.forEach(function(s) { s.classList.remove('active'); });
+    var target = document.querySelector('[data-step="' + n + '"]');
+    if (target) target.classList.add('active');
+
+    progress.style.width = ((n / TOTAL_STEPS) * 100) + '%';
+    btnBack.style.visibility = n > 1 ? 'visible' : 'hidden';
+
+    if (n === 8) {
+      btnNext.style.display = 'none';
+    } else {
+      btnNext.style.display = '';
+      updateNextState();
+    }
+
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  function updateNextState() {
+    var step = document.querySelector('.step.active');
+    if (!step) return;
+    var s = parseInt(step.getAttribute('data-step'));
+
+    if (s <= 5) {
+      btnNext.classList.toggle('enabled', !!answers['q' + s]);
+    } else if (s === 6) {
+      btnNext.classList.toggle('enabled', !!answers.focus_area);
+    } else if (s === 7) {
+      btnNext.classList.toggle('enabled', regions.length > 0);
+    }
+  }
+
+  // Radio-style answer cards (Q1-Q6)
+  document.querySelectorAll('.answers').forEach(function(group) {
+    var field = group.getAttribute('data-field');
+    group.querySelectorAll('.answer-card').forEach(function(card) {
+      card.addEventListener('click', function() {
+        group.querySelectorAll('.answer-card').forEach(function(c) { c.classList.remove('selected'); });
+        card.classList.add('selected');
+        answers[field] = card.getAttribute('data-value');
+        updateNextState();
+        // Auto-advance after short delay for Q1-Q5
+        if (currentStep <= 5) {
+          setTimeout(function() {
+            currentStep++;
+            showStep(currentStep);
+          }, 350);
+        }
+      });
+    });
+  });
+
+  // Checkbox-style cards (Q7)
+  document.querySelectorAll('.checkbox-card').forEach(function(card) {
+    card.addEventListener('click', function() {
+      card.classList.toggle('selected');
+      var val = card.getAttribute('data-value');
+      var idx = regions.indexOf(val);
+      if (idx > -1) { regions.splice(idx, 1); }
+      else { regions.push(val); }
+      updateNextState();
+    });
+  });
+
+  // Next button
+  btnNext.addEventListener('click', function() {
+    if (!btnNext.classList.contains('enabled')) return;
+    currentStep++;
+    showStep(currentStep);
+  });
+
+  // Back button
+  btnBack.addEventListener('click', function() {
+    if (currentStep > 1) {
+      currentStep--;
+      showStep(currentStep);
+    }
+  });
+
+  // Email form validation
+  var firstInput = document.getElementById('cpq-first');
+  var lastInput = document.getElementById('cpq-last');
+  var emailInput = document.getElementById('cpq-email');
+
+  function validateForm() {
+    var valid = firstInput.value.trim() && lastInput.value.trim() && emailInput.value.trim() && emailInput.value.indexOf('@') > 0;
+    btnSubmit.disabled = !valid;
+  }
+
+  firstInput.addEventListener('input', validateForm);
+  lastInput.addEventListener('input', validateForm);
+  emailInput.addEventListener('input', validateForm);
+
+  // Submit
+  btnSubmit.addEventListener('click', function() {
+    if (btnSubmit.disabled) return;
+    btnSubmit.disabled = true;
+    btnSubmit.innerHTML = '<span class="spinner"></span>Submitting...';
+
+    // Calculate winner
+    var tallies = { responder: 0, protector: 0, champion: 0, visionary: 0, mentor: 0 };
+    for (var i = 1; i <= 5; i++) {
+      var v = answers['q' + i];
+      if (v && tallies.hasOwnProperty(v)) tallies[v]++;
+    }
+    var winner = 'responder', max = 0;
+    for (var key in tallies) {
+      if (tallies[key] > max) { max = tallies[key]; winner = key; }
+    }
+
+    // Submit to HubSpot Forms API
+    var payload = {
+      fields: [
+        { objectTypeId: '0-1', name: 'firstname', value: firstInput.value.trim() },
+        { objectTypeId: '0-1', name: 'lastname', value: lastInput.value.trim() },
+        { objectTypeId: '0-1', name: 'email', value: emailInput.value.trim() },
+        { objectTypeId: '0-1', name: 'cpq_profile_result', value: winner },
+        { objectTypeId: '0-1', name: 'cpq_q1', value: answers.q1 || '' },
+        { objectTypeId: '0-1', name: 'cpq_q2', value: answers.q2 || '' },
+        { objectTypeId: '0-1', name: 'cpq_q3', value: answers.q3 || '' },
+        { objectTypeId: '0-1', name: 'cpq_q4', value: answers.q4 || '' },
+        { objectTypeId: '0-1', name: 'cpq_q5', value: answers.q5 || '' },
+        { objectTypeId: '0-1', name: 'cpq_focus_area', value: answers.focus_area || '' },
+        { objectTypeId: '0-1', name: 'cpq_regions', value: regions.join(';') }
+      ],
+      context: {
+        pageUri: window.location.href,
+        pageName: 'Compassion Profile Quiz'
+      }
+    };
+
+    fetch('https://api.hsforms.com/submissions/v3/integration/submit/' + PORTAL_ID + '/' + FORM_ID, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload)
+    })
+    .then(function(res) {
+      if (!res.ok) throw new Error('Submission failed');
+      return res.json();
+    })
+    .then(function() {
+      showResult(winner);
+    })
+    .catch(function(err) {
+      console.error('HubSpot submission error:', err);
+      // Show result anyway — don't punish the user for a backend hiccup
+      showResult(winner);
+    });
+  });
+
+  function showResult(profile) {
+    // Hide quiz UI
+    steps.forEach(function(s) { s.classList.remove('active'); });
+    navRow.style.display = 'none';
+    document.querySelector('.progress-wrap').style.display = 'none';
+
+    // Show matching result
+    var resultEl = document.getElementById('result-' + profile);
+    if (resultEl) resultEl.classList.add('active');
+
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  // Initialize
+  showStep(1);
+})();
+</script>
+
+</body>
+</html>
