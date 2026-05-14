@@ -55,22 +55,73 @@ body {
   max-height: 200px;
 }
 
-/* Progress Bar */
-.progress-wrap {
+/* Vine Progress Bar */
+.vine-wrap {
   width: 100%;
-  height: 6px;
-  background: #e0dbd4;
-  border-radius: 3px;
   margin: 20px 0 30px;
-  overflow: hidden;
+  position: relative;
+  height: 48px;
 }
 
-.progress-bar {
-  height: 100%;
-  background: var(--navy);
-  border-radius: 3px;
-  width: 0%;
-  transition: width var(--transition);
+.vine-svg {
+  width: 100%;
+  height: 48px;
+  display: block;
+}
+
+.vine-stem {
+  stroke: #e0dbd4;
+  stroke-width: 3;
+  fill: none;
+}
+
+.vine-stem-fill {
+  stroke: var(--protector-bg);
+  stroke-width: 3;
+  fill: none;
+  stroke-dasharray: 1000;
+  stroke-dashoffset: 1000;
+  transition: stroke-dashoffset 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.vine-node {
+  fill: #e0dbd4;
+  transition: all 0.4s ease;
+}
+
+.vine-node.reached {
+  fill: var(--protector-bg);
+}
+
+.vine-leaf {
+  fill: none;
+  stroke: #e0dbd4;
+  stroke-width: 1.5;
+  opacity: 0;
+  transform-origin: center;
+  transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.vine-leaf.reached {
+  fill: var(--protector-bg);
+  stroke: var(--protector-dark);
+  opacity: 1;
+}
+
+.vine-leaf.left {
+  transform: rotate(-30deg) scale(0.5);
+}
+
+.vine-leaf.left.reached {
+  transform: rotate(-30deg) scale(1);
+}
+
+.vine-leaf.right {
+  transform: rotate(30deg) scale(0.5);
+}
+
+.vine-leaf.right.reached {
+  transform: rotate(30deg) scale(1);
 }
 
 /* Steps */
@@ -400,9 +451,32 @@ body {
     <img src="header-graphic.jpg" alt="The Compassion Profile Quiz" id="header-img">
   </div>
 
-  <!-- Progress -->
-  <div class="progress-wrap">
-    <div class="progress-bar" id="progress"></div>
+  <!-- Vine Progress -->
+  <div class="vine-wrap" id="vine-wrap">
+    <svg class="vine-svg" viewBox="0 0 720 48" preserveAspectRatio="none">
+      <!-- Background stem (wavy path) -->
+      <path class="vine-stem" d="M 10 24 C 55 14, 75 34, 100 24 C 125 14, 145 34, 190 24 C 215 14, 235 34, 280 24 C 305 14, 325 34, 370 24 C 395 14, 415 34, 460 24 C 485 14, 505 34, 550 24 C 575 14, 595 34, 640 24 L 710 24" />
+      <!-- Filled stem (grows) -->
+      <path class="vine-stem-fill" id="vine-fill" d="M 10 24 C 55 14, 75 34, 100 24 C 125 14, 145 34, 190 24 C 215 14, 235 34, 280 24 C 305 14, 325 34, 370 24 C 395 14, 415 34, 460 24 C 485 14, 505 34, 550 24 C 575 14, 595 34, 640 24 L 710 24" />
+      <!-- Nodes at each step -->
+      <circle class="vine-node" data-vine="1" cx="100" cy="24" r="4" />
+      <circle class="vine-node" data-vine="2" cx="190" cy="24" r="4" />
+      <circle class="vine-node" data-vine="3" cx="280" cy="24" r="4" />
+      <circle class="vine-node" data-vine="4" cx="370" cy="24" r="4" />
+      <circle class="vine-node" data-vine="5" cx="460" cy="24" r="4" />
+      <circle class="vine-node" data-vine="6" cx="550" cy="24" r="4" />
+      <circle class="vine-node" data-vine="7" cx="640" cy="24" r="4" />
+      <!-- Leaves (alternating left/right, teardrop shape) -->
+      <path class="vine-leaf left" data-vine="1" d="M 100 22 C 94 14, 84 6, 80 4 C 78 10, 86 18, 100 22 Z M 90 12 L 100 22" />
+      <path class="vine-leaf right" data-vine="2" d="M 190 26 C 196 34, 206 42, 210 44 C 212 38, 204 30, 190 26 Z M 200 36 L 190 26" />
+      <path class="vine-leaf left" data-vine="3" d="M 280 22 C 274 14, 264 6, 260 4 C 258 10, 266 18, 280 22 Z M 270 12 L 280 22" />
+      <path class="vine-leaf right" data-vine="4" d="M 370 26 C 376 34, 386 42, 390 44 C 392 38, 384 30, 370 26 Z M 380 36 L 370 26" />
+      <path class="vine-leaf left" data-vine="5" d="M 460 22 C 454 14, 444 6, 440 4 C 438 10, 446 18, 460 22 Z M 450 12 L 460 22" />
+      <path class="vine-leaf right" data-vine="6" d="M 550 26 C 556 34, 566 42, 570 44 C 572 38, 564 30, 550 26 Z M 560 36 L 550 26" />
+      <path class="vine-leaf left" data-vine="7" d="M 640 22 C 634 14, 624 6, 620 4 C 618 10, 626 18, 640 22 Z M 630 12 L 640 22" />
+      <!-- Bud at start -->
+      <circle cx="10" cy="24" r="5" fill="var(--protector-bg)" />
+    </svg>
   </div>
 
   <!-- STEP 1: Q1 -->
@@ -623,18 +697,38 @@ body {
   var regions = [];
 
   var steps = document.querySelectorAll('.step');
-  var progress = document.getElementById('progress');
+  var vineFill = document.getElementById('vine-fill');
+  var vineWrap = document.getElementById('vine-wrap');
   var btnNext = document.getElementById('btn-next');
   var btnBack = document.getElementById('btn-back');
   var navRow = document.getElementById('nav-row');
   var btnSubmit = document.getElementById('btn-submit');
+
+  // Measure vine path length on init
+  var vineLength = vineFill.getTotalLength();
+  vineFill.style.strokeDasharray = vineLength;
+  vineFill.style.strokeDashoffset = vineLength;
+
+  function updateVine(step) {
+    // Grow the vine stem
+    var pct = step / TOTAL_STEPS;
+    vineFill.style.strokeDashoffset = vineLength * (1 - pct);
+
+    // Activate nodes and leaves up to current step
+    for (var i = 1; i <= 7; i++) {
+      var reached = i < step;
+      document.querySelectorAll('[data-vine="' + i + '"]').forEach(function(el) {
+        el.classList.toggle('reached', reached);
+      });
+    }
+  }
 
   function showStep(n) {
     steps.forEach(function(s) { s.classList.remove('active'); });
     var target = document.querySelector('[data-step="' + n + '"]');
     if (target) target.classList.add('active');
 
-    progress.style.width = ((n / TOTAL_STEPS) * 100) + '%';
+    updateVine(n);
     btnBack.style.visibility = n > 1 ? 'visible' : 'hidden';
 
     if (n === 8) {
@@ -783,7 +877,7 @@ body {
     // Hide quiz UI
     steps.forEach(function(s) { s.classList.remove('active'); });
     navRow.style.display = 'none';
-    document.querySelector('.progress-wrap').style.display = 'none';
+    vineWrap.style.display = 'none';
 
     // Show matching result
     var resultEl = document.getElementById('result-' + profile);
