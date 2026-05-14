@@ -61,20 +61,11 @@ body {
   z-index: 1;
 }
 
-.pill-border-inner,
-.pill-border-outer {
+.pill-border-inner {
   position: absolute;
   top: 0; left: 0; right: 0; bottom: 0;
-}
-
-.pill-border-inner {
   border-left: 5px solid var(--pill-color);
   border-right: 5px solid var(--pill-color);
-}
-
-.pill-border-outer {
-  border-left: 2.5px solid var(--pill-color);
-  border-right: 2.5px solid var(--pill-color);
 }
 
 .pill-border-inner::before,
@@ -85,8 +76,27 @@ body {
   right: -5px;
   height: 0;
   padding-bottom: 50%;
+}
+
+.pill-border-inner::before {
+  top: 0;
+  border-radius: 9999px 9999px 0 0;
   border: 5px solid var(--pill-color);
   border-bottom: none;
+}
+
+.pill-border-inner::after {
+  bottom: 0;
+  border-radius: 0 0 9999px 9999px;
+  border: 5px solid var(--pill-color);
+  border-top: none;
+}
+
+.pill-border-outer {
+  position: absolute;
+  top: -12px; left: -12px; right: -12px; bottom: -12px;
+  border-left: 2.5px solid var(--pill-color);
+  border-right: 2.5px solid var(--pill-color);
 }
 
 .pill-border-outer::before,
@@ -97,55 +107,41 @@ body {
   right: -2.5px;
   height: 0;
   padding-bottom: 50%;
+}
+
+.pill-border-outer::before {
+  top: 0;
+  border-radius: 9999px 9999px 0 0;
   border: 2.5px solid var(--pill-color);
   border-bottom: none;
 }
 
-.pill-border-inner::before,
-.pill-border-outer::before {
-  top: 0;
-  border-radius: 9999px 9999px 0 0;
-}
-
-.pill-border-inner::after {
-  bottom: 0;
-  border-radius: 0 0 9999px 9999px;
-  border: 5px solid var(--pill-color);
-  border-top: none;
-}
-
 .pill-border-outer::after {
   bottom: 0;
   border-radius: 0 0 9999px 9999px;
   border: 2.5px solid var(--pill-color);
   border-top: none;
-}
-
-.pill-border-outer {
-  top: -11px; left: -11px; right: -11px; bottom: -11px;
-}
-
-.pill-border-outer::before,
-.pill-border-outer::after {
-  left: -3px;
-  right: -3px;
 }
 
 body.dark .pill-frame {
   --pill-color: #444;
 }
 
-body {
-  overflow-x: hidden;
-}
-
 .quiz-container {
   max-width: 640px;
   margin: 0 auto;
-  padding: 60px 40px 80px;
-  min-height: calc(100vh - 48px);
+  padding: 40px 40px 60px;
   display: flex;
   flex-direction: column;
+  /* Push content below the top semicircle cap and above the bottom one.
+     Cap height ≈ 50% of pill-frame width. At 800px that's ~400px.
+     We need content to start after the curve clears, roughly 30% in. */
+  padding-top: 25cqw;
+  padding-bottom: 25cqw;
+}
+
+.pill-frame {
+  container-type: inline-size;
 }
 
 /* Header */
