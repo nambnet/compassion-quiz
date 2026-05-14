@@ -528,23 +528,26 @@ body.dark .progress-wrap {
   display: block;
 }
 
-/* Body-level ghost icon — SVG already masks inside the pill */
+/* Body-level ghost icon — scaled to full viewport width, overflow hidden */
 #body-ghost {
   display: none;
   position: fixed;
   top: 0;
-  left: 50%;
-  transform: translateX(-50%);
+  left: 0;
   width: 100vw;
   height: 100vh;
   pointer-events: none;
   z-index: 0;
+  overflow: hidden;
 }
 
 #body-ghost img {
   width: 100%;
-  height: 100%;
-  object-fit: contain;
+  height: auto;
+  position: absolute;
+  top: 50%;
+  left: 0;
+  transform: translateY(-50%);
 }
 
 #body-ghost.active {
