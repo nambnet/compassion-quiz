@@ -523,15 +523,48 @@ body.dark .progress-wrap {
 .btn-submit:disabled { opacity: 0.4; pointer-events: none; }
 
 /* Results */
+/* Result ghost icon background */
 .result-page {
   display: none;
   text-align: center;
   animation: fadeIn 0.6s ease;
+  position: relative;
 }
 
 .result-page.active {
   display: block;
 }
+
+.result-ghost {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 120vmin;
+  height: 120vmin;
+  opacity: 0.07;
+  pointer-events: none;
+  z-index: 0;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+body.dark .result-ghost {
+  opacity: 0.05;
+}
+
+.result-page .result-graphic,
+.result-page .result-body {
+  position: relative;
+  z-index: 1;
+}
+
+#result-responder .result-ghost { background-image: url('icon-responder.svg'); }
+#result-protector .result-ghost { background-image: url('icon-protector.svg'); }
+#result-champion .result-ghost { background-image: url('icon-champion.svg'); }
+#result-visionary .result-ghost { background-image: url('icon-visionary.svg'); }
+#result-mentor .result-ghost { background-image: url('icon-mentor.svg'); }
 
 .result-graphic {
   width: 100%;
@@ -764,6 +797,7 @@ body.dark .progress-wrap {
 
   <!-- RESULTS (5 profiles, shown after submit) -->
   <div class="result-page" id="result-responder">
+    <div class="result-ghost"></div>
     <img src="result-responder.jpg" alt="The Responder" class="result-graphic">
     <div class="result-body">
       <p>You notice needs quickly and move toward them without hesitation. Whether someone is hurting, celebrating, or simply in need of support, you step in with care, presence, and practical help. You don't wait to be asked. You respond.</p>
@@ -779,6 +813,7 @@ body.dark .progress-wrap {
   </div>
 
   <div class="result-page" id="result-protector">
+    <div class="result-ghost"></div>
     <img src="result-protector.jpg" alt="The Protector" class="result-graphic">
     <div class="result-body">
       <p>You're the one who notices when something isn't right. When someone is in a vulnerable situation, dismissed, or at risk, something in you rises up. You don't walk away from people who need someone in their corner. You step in, you speak up, and you stay.</p>
@@ -794,6 +829,7 @@ body.dark .progress-wrap {
   </div>
 
   <div class="result-page" id="result-champion">
+    <div class="result-ghost"></div>
     <img src="result-champion.jpg" alt="The Champion" class="result-graphic">
     <div class="result-body">
       <p>You're the one who names what others won't. When something moves your heart, you can't stay quiet. You help people understand what's happening, why it matters, and what they can do — through your words, your relationships, and the way you tell a story.</p>
@@ -809,6 +845,7 @@ body.dark .progress-wrap {
   </div>
 
   <div class="result-page" id="result-visionary">
+    <div class="result-ghost"></div>
     <img src="result-visionary.jpg" alt="The Visionary" class="result-graphic">
     <div class="result-body">
       <p>You're the one who sees what could be. When something is broken, you don't just feel sad about it — you start thinking about how to fix it. You care about lasting change, not quick fixes, and you're willing to stay in a hard place long enough to see something new take shape.</p>
@@ -824,6 +861,7 @@ body.dark .progress-wrap {
   </div>
 
   <div class="result-page" id="result-mentor">
+    <div class="result-ghost"></div>
     <img src="result-mentor.jpg" alt="The Mentor" class="result-graphic">
     <div class="result-body">
       <p>You pay attention to people. You care deeply about spiritual growth and create space for discipleship and community. You notice what God is doing in someone and help draw it out, offering encouragement and truth so they can step into what God is calling them to do.</p>
