@@ -34,13 +34,14 @@ body {
   line-height: 1.6;
 }
 
-/* Pill Border Frame — double-stroke oval */
+/* Pill Border Frame — double-stroke with half-circle caps */
 .pill-frame {
+  --pill-color: #ccc;
   max-width: 800px;
   margin: 24px auto;
-  border-radius: 240px 240px 240px 240px;
-  border: 4px solid var(--navy);
-  outline: 4px solid var(--navy);
+  border-radius: 400px / 50%;
+  border: 3px solid var(--pill-color);
+  outline: 3px solid var(--pill-color);
   outline-offset: 8px;
   position: relative;
   min-height: calc(100vh - 48px);
@@ -48,8 +49,7 @@ body {
 }
 
 body.dark .pill-frame {
-  border-color: #E8DFD0;
-  outline-color: #E8DFD0;
+  --pill-color: #444;
 }
 
 .quiz-container {
@@ -563,7 +563,7 @@ body.dark .progress-wrap {
 /* Mobile */
 @media (max-width: 600px) {
   .quiz-container { padding: 30px 20px; }
-  .pill-frame { margin: 12px; border-radius: 100px; outline-offset: 6px; border-width: 3px; outline-width: 3px; }
+  .pill-frame { margin: 12px; border-radius: 400px / 50%; outline-offset: 6px; border-width: 2px; outline-width: 2px; }
   .question-text { font-size: 1.3rem; }
   .answer-card { padding: 14px 16px; font-size: 0.9rem; }
   .checkbox-grid { grid-template-columns: 1fr; }
