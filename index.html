@@ -548,7 +548,6 @@ body.dark .progress-wrap {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  opacity: 0.18;
 }
 
 #body-ghost.active {
@@ -1068,6 +1067,14 @@ body.dark .pill-frame {
     });
   });
 
+  var resultBgColors = {
+    responder: '#7C92AE',
+    protector: '#5A7D6A',
+    champion:  '#C4969A',
+    visionary: '#7A9AAA',
+    mentor:    '#D4B45C'
+  };
+
   function showResult(profile) {
     // Hide quiz UI
     steps.forEach(function(s) { s.classList.remove('active'); });
@@ -1078,7 +1085,8 @@ body.dark .pill-frame {
     var resultEl = document.getElementById('result-' + profile);
     if (resultEl) resultEl.classList.add('active');
 
-    // Show ghost icon on body background
+    // Set body background color and show ghost icon
+    document.body.style.backgroundColor = resultBgColors[profile] || '#7C92AE';
     var ghost = document.getElementById('body-ghost');
     document.getElementById('body-ghost-img').src = 'ghost-' + profile + '.svg';
     ghost.classList.add('active');
