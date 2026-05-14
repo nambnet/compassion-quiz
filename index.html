@@ -65,21 +65,39 @@ body {
 .pill-border-outer {
   position: absolute;
   top: 0; left: 0; right: 0; bottom: 0;
-  border-left: 3px solid var(--pill-color);
-  border-right: 3px solid var(--pill-color);
+}
+
+.pill-border-inner {
+  border-left: 5px solid var(--pill-color);
+  border-right: 5px solid var(--pill-color);
+}
+
+.pill-border-outer {
+  border-left: 2.5px solid var(--pill-color);
+  border-right: 2.5px solid var(--pill-color);
 }
 
 .pill-border-inner::before,
-.pill-border-inner::after,
+.pill-border-inner::after {
+  content: '';
+  position: absolute;
+  left: -5px;
+  right: -5px;
+  height: 0;
+  padding-bottom: 50%;
+  border: 5px solid var(--pill-color);
+  border-bottom: none;
+}
+
 .pill-border-outer::before,
 .pill-border-outer::after {
   content: '';
   position: absolute;
-  left: -3px;
-  right: -3px;
+  left: -2.5px;
+  right: -2.5px;
   height: 0;
   padding-bottom: 50%;
-  border: 3px solid var(--pill-color);
+  border: 2.5px solid var(--pill-color);
   border-bottom: none;
 }
 
@@ -89,11 +107,17 @@ body {
   border-radius: 9999px 9999px 0 0;
 }
 
-.pill-border-inner::after,
+.pill-border-inner::after {
+  bottom: 0;
+  border-radius: 0 0 9999px 9999px;
+  border: 5px solid var(--pill-color);
+  border-top: none;
+}
+
 .pill-border-outer::after {
   bottom: 0;
   border-radius: 0 0 9999px 9999px;
-  border: 3px solid var(--pill-color);
+  border: 2.5px solid var(--pill-color);
   border-top: none;
 }
 
@@ -111,14 +135,14 @@ body.dark .pill-frame {
   --pill-color: #444;
 }
 
-.pill-frame {
-  overflow: visible;
+body {
+  overflow-x: hidden;
 }
 
 .quiz-container {
   max-width: 640px;
   margin: 0 auto;
-  padding: 40px 40px 40px;
+  padding: 60px 40px 80px;
   min-height: calc(100vh - 48px);
   display: flex;
   flex-direction: column;
