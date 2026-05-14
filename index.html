@@ -34,25 +34,57 @@ body {
   line-height: 1.6;
 }
 
+/* Pill Border Frame */
+.pill-frame {
+  max-width: 800px;
+  margin: 20px auto;
+  padding: 0;
+  position: relative;
+  min-height: calc(100vh - 40px);
+}
+
+.pill-frame > svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.pill-frame > svg path {
+  fill: none;
+  stroke: var(--navy);
+  stroke-width: 1.2;
+  opacity: 0.2;
+  vector-effect: non-scaling-stroke;
+}
+
+body.dark .pill-frame > svg path {
+  stroke: #E8DFD0;
+  opacity: 0.15;
+}
+
 .quiz-container {
   max-width: 720px;
   margin: 0 auto;
-  padding: 20px;
-  min-height: 100vh;
+  padding: 30px 40px;
+  min-height: calc(100vh - 40px);
   display: flex;
   flex-direction: column;
+  position: relative;
+  z-index: 2;
 }
 
 /* Header */
 .quiz-header {
   text-align: center;
-  padding: 40px 0 20px;
+  padding: 20px 0 10px;
 }
 
 .quiz-header img {
   max-width: 100%;
   height: auto;
-  max-height: 200px;
 }
 
 /* Vine Progress Bar */
@@ -545,11 +577,13 @@ body.dark .progress-wrap {
 
 /* Mobile */
 @media (max-width: 600px) {
-  .quiz-container { padding: 16px; }
+  .quiz-container { padding: 20px 16px; }
+  .pill-frame { margin: 10px; min-height: calc(100vh - 20px); }
+  .pill-frame > svg rect { rx: 40; ry: 40; }
   .question-text { font-size: 1.3rem; }
   .answer-card { padding: 14px 16px; font-size: 0.9rem; }
   .checkbox-grid { grid-template-columns: 1fr; }
-  .quiz-header { padding: 20px 0 10px; }
+  .quiz-header { padding: 10px 0 5px; }
 }
 </style>
 </head>
@@ -557,6 +591,10 @@ body.dark .progress-wrap {
 
 <button class="dark-toggle" id="dark-toggle" aria-label="Toggle dark mode">&#9790;</button>
 
+<div class="pill-frame">
+  <svg viewBox="0 0 700 400" preserveAspectRatio="none">
+    <rect x="8" y="8" width="684" height="384" rx="180" ry="180" />
+  </svg>
 <div class="quiz-container">
 
   <!-- Header -->
@@ -779,6 +817,7 @@ body.dark .progress-wrap {
     <button class="btn-next" id="btn-next">Next</button>
   </div>
 
+</div>
 </div>
 
 <script>
