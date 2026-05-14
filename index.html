@@ -532,14 +532,14 @@ body.dark .progress-wrap {
 #body-ghost {
   display: none;
   position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  opacity: 0.12;
+  top: -5%;
+  left: -5%;
+  width: 110%;
+  height: 110%;
+  opacity: 0.25;
   pointer-events: none;
   z-index: 0;
-  background-size: 80% auto;
+  background-size: cover;
   background-repeat: no-repeat;
   background-position: center;
 }
@@ -549,7 +549,7 @@ body.dark .progress-wrap {
 }
 
 body.dark #body-ghost {
-  opacity: 0.06;
+  opacity: 0.12;
 }
 
 .pill-frame {
@@ -1068,7 +1068,7 @@ body.dark .pill-frame {
 
     // Show ghost icon on body background
     var ghost = document.getElementById('body-ghost');
-    ghost.style.backgroundImage = "url('icon-" + profile + ".svg')";
+    ghost.style.backgroundImage = "url('ghost-" + profile + ".svg')";
     ghost.classList.add('active');
 
     window.scrollTo({ top: 0, behavior: 'smooth' });
