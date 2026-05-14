@@ -528,38 +528,32 @@ body.dark .progress-wrap {
   display: block;
 }
 
-/* Body-level ghost icon — only visible outside the pill */
+/* Body-level ghost icon — SVG already masks inside the pill */
 #body-ghost {
   display: none;
   position: fixed;
-  top: -5%;
-  left: -5%;
-  width: 110%;
-  height: 110%;
-  opacity: 0.25;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100vw;
+  height: 100vh;
   pointer-events: none;
   z-index: 0;
-  background-size: cover;
-  background-repeat: no-repeat;
-  background-position: center;
+}
+
+#body-ghost img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
 }
 
 #body-ghost.active {
   display: block;
 }
 
-body.dark #body-ghost {
-  opacity: 0.12;
-}
-
 .pill-frame {
   position: relative;
   z-index: 1;
-  background: var(--cream);
-}
-
-body.dark .pill-frame {
-  background: #1A1A1A;
 }
 
 .result-graphic {
@@ -655,7 +649,7 @@ body.dark .pill-frame {
 
 <button class="dark-toggle" id="dark-toggle" aria-label="Toggle dark mode">&#9790;</button>
 
-<div id="body-ghost"></div>
+<div id="body-ghost"><img id="body-ghost-img" src="" alt=""></div>
 
 <div class="pill-frame">
   <div class="pill-border">
@@ -1077,7 +1071,7 @@ body.dark .pill-frame {
 
     // Show ghost icon on body background
     var ghost = document.getElementById('body-ghost');
-    ghost.style.backgroundImage = "url('ghost-" + profile + ".svg')";
+    document.getElementById('body-ghost-img').src = 'ghost-' + profile + '.svg';
     ghost.classList.add('active');
 
     window.scrollTo({ top: 0, behavior: 'smooth' });
