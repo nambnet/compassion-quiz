@@ -58,10 +58,11 @@ body {
 /* Vine Progress Bar */
 .vine-wrap {
   width: 100%;
-  margin: 20px 0 30px;
+  margin: 20px 0 20px;
   position: relative;
-  height: 50px;
+  height: 55px;
   overflow: hidden;
+  container-type: inline-size;
 }
 
 .vine-progress-bg {
@@ -70,14 +71,14 @@ body {
   left: 0;
   width: 100%;
   height: 100%;
-  opacity: 0.15;
+  opacity: 0.18;
 }
 
-.vine-progress-bg img {
+.vine-progress-bg img,
+.vine-progress-fill img {
   width: 100%;
   height: 100%;
-  object-fit: cover;
-  object-position: left center;
+  display: block;
 }
 
 .vine-progress-fill {
@@ -92,16 +93,146 @@ body {
 
 .vine-progress-fill img {
   width: 100cqw;
-  height: 100%;
-  object-fit: cover;
-  object-position: left center;
   position: absolute;
   top: 0;
   left: 0;
 }
 
-.vine-wrap {
-  container-type: inline-size;
+/* Dark Mode */
+.dark-toggle {
+  position: fixed;
+  top: 16px;
+  right: 16px;
+  z-index: 100;
+  background: none;
+  border: 2px solid #ccc;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  transition: all 0.3s ease;
+  color: var(--navy);
+  background: rgba(255,255,255,0.8);
+  backdrop-filter: blur(4px);
+}
+
+.dark-toggle:hover {
+  border-color: var(--navy);
+}
+
+body.dark {
+  --navy: #E8DFD0;
+  --cream: #1A1A1A;
+  background: #1A1A1A;
+  color: #E8DFD0;
+}
+
+body.dark .answer-card {
+  background: #2A2A2A;
+  border-color: #3A3A3A;
+  color: #E8DFD0;
+}
+
+body.dark .answer-card:hover {
+  border-color: #E8DFD0;
+  background: #333;
+}
+
+body.dark .answer-card.selected {
+  background: #E8DFD0;
+  border-color: #E8DFD0;
+  color: #1A1A1A;
+}
+
+body.dark .checkbox-card {
+  background: #2A2A2A;
+  border-color: #3A3A3A;
+  color: #E8DFD0;
+}
+
+body.dark .checkbox-card:hover {
+  border-color: #E8DFD0;
+}
+
+body.dark .checkbox-card.selected {
+  background: #E8DFD0;
+  border-color: #E8DFD0;
+  color: #1A1A1A;
+}
+
+body.dark .capture-form input[type="text"],
+body.dark .capture-form input[type="email"] {
+  background: #2A2A2A;
+  border-color: #3A3A3A;
+  color: #E8DFD0;
+}
+
+body.dark .capture-form input:focus {
+  border-color: #E8DFD0;
+}
+
+body.dark .capture-form label {
+  color: #A09888;
+}
+
+body.dark .step-label {
+  color: #A09888;
+}
+
+body.dark .section-intro p {
+  color: #A09888;
+}
+
+body.dark .consent-row {
+  color: #A09888;
+}
+
+body.dark .btn-next {
+  background: #E8DFD0;
+  color: #1A1A1A;
+}
+
+body.dark .btn-next:hover {
+  background: #D4C9B8;
+}
+
+body.dark .btn-submit {
+  background: #E8DFD0;
+  color: #1A1A1A;
+}
+
+body.dark .btn-submit:hover {
+  background: #D4C9B8;
+}
+
+body.dark .btn-back {
+  color: #A09888;
+}
+
+body.dark .btn-back:hover {
+  color: #E8DFD0;
+}
+
+body.dark .dark-toggle {
+  background: rgba(42,42,42,0.8);
+  border-color: #555;
+  color: #E8DFD0;
+}
+
+body.dark .vine-progress-fill img {
+  filter: invert(0.85) sepia(0.1);
+}
+
+body.dark .vine-progress-bg img {
+  filter: invert(0.85) sepia(0.1);
+}
+
+body.dark .progress-wrap {
+  background: #333;
 }
 
 /* Steps */
@@ -423,6 +554,8 @@ body {
 </style>
 </head>
 <body>
+
+<button class="dark-toggle" id="dark-toggle" aria-label="Toggle dark mode">&#9790;</button>
 
 <div class="quiz-container">
 
@@ -832,6 +965,23 @@ body {
     if (resultEl) resultEl.classList.add('active');
 
     window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  // Dark mode toggle
+  var darkBtn = document.getElementById('dark-toggle');
+  var isDark = localStorage.getItem('cpq-dark') === 'true';
+  if (isDark) document.body.classList.add('dark');
+  updateDarkIcon();
+
+  darkBtn.addEventListener('click', function() {
+    document.body.classList.toggle('dark');
+    isDark = document.body.classList.contains('dark');
+    localStorage.setItem('cpq-dark', isDark);
+    updateDarkIcon();
+  });
+
+  function updateDarkIcon() {
+    darkBtn.innerHTML = document.body.classList.contains('dark') ? '&#9788;' : '&#9790;';
   }
 
   // Initialize
