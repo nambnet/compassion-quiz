@@ -1071,9 +1071,9 @@ body.dark .pill-frame {
 
   var resultBgColors = {
     responder: '#7C92AE',
-    protector: '#4A6B5A',
-    champion:  '#B07D82',
-    visionary: '#5A7A8A',
+    protector: '#5A7D6A',
+    champion:  '#C4969A',
+    visionary: '#6B8494',
     mentor:    '#f1b963'
   };
 
@@ -1089,6 +1089,8 @@ body.dark .pill-frame {
 
     // Set body background color and show ghost icon
     document.body.style.backgroundColor = resultBgColors[profile] || '#7C92AE';
+    // Force pill interior to cream regardless of dark mode
+    document.querySelector('.pill-frame').style.background = '#FAF7F2';
     var ghost = document.getElementById('body-ghost');
     document.getElementById('body-ghost-img').src = 'ghost-' + profile + '.svg';
     ghost.classList.add('active');
