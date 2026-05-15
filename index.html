@@ -656,55 +656,58 @@ body.dark .pill-frame {
   margin-bottom: 6px;
 }
 
-/* Profile Carousel */
-.profile-carousel {
+/* Header carousel (lives inside quiz-header, revealed on results) */
+.header-carousel {
   display: none;
   overflow: hidden;
-  margin-bottom: 24px;
-  position: relative;
   width: 100%;
 }
 
-.profile-carousel.active {
+.header-carousel.active {
   display: block;
 }
 
-.carousel-track {
+.header-carousel-track {
   display: flex;
   will-change: transform;
 }
 
-.carousel-slide {
+.header-slide {
   min-width: 100%;
   text-align: center;
-  padding: 30px 40px 20px;
+  padding: 20px 20px 10px;
 }
 
-.carousel-icon {
-  width: 50%;
-  max-width: 220px;
+.header-slide img:first-child {
+  width: 55%;
+  max-width: 240px;
   height: auto;
   display: block;
-  margin: 0 auto 16px;
+  margin: 0 auto 12px;
 }
 
-.carousel-label {
+.header-slide-label {
   width: 85%;
-  max-width: 400px;
+  max-width: 420px;
   margin: 0 auto;
   display: block;
 }
 
-/* Hide static result graphic on desktop, show carousel instead */
+/* Header expanding animation */
+.quiz-header.result-mode #header-img {
+  display: none;
+}
+
+/* Hide static result graphic on desktop when carousel active */
 @media (min-width: 601px) {
-  .result-graphic-mobile {
+  .quiz-header.result-mode ~ .result-page .result-graphic-mobile {
     display: none;
   }
 }
 
-/* On mobile, hide carousel and show static graphic */
+/* On mobile, hide header carousel and show static graphic */
 @media (max-width: 600px) {
-  .profile-carousel {
+  .header-carousel {
     display: none !important;
   }
   .result-graphic-mobile {
@@ -758,9 +761,18 @@ body.dark .pill-frame {
   </div>
 <div class="quiz-container">
 
-  <!-- Header -->
-  <div class="quiz-header">
+  <!-- Header (transforms into result reveal) -->
+  <div class="quiz-header" id="quiz-header">
     <img src="header-graphic.svg" alt="The Compassion Profile Quiz" id="header-img">
+    <div class="header-carousel" id="header-carousel">
+      <div class="header-carousel-track" id="header-carousel-track">
+        <div class="header-slide"><img src="icon-responder.svg" alt=""><img src="label-responder.svg" alt="" class="header-slide-label"></div>
+        <div class="header-slide"><img src="icon-protector.svg" alt=""><img src="label-protector.svg" alt="" class="header-slide-label"></div>
+        <div class="header-slide"><img src="icon-champion.svg" alt=""><img src="label-champion.svg" alt="" class="header-slide-label"></div>
+        <div class="header-slide"><img src="icon-visionary.svg" alt=""><img src="label-visionary.svg" alt="" class="header-slide-label"></div>
+        <div class="header-slide"><img src="icon-mentor.svg" alt=""><img src="label-mentor.svg" alt="" class="header-slide-label"></div>
+      </div>
+    </div>
   </div>
 
   <!-- Vine Progress -->
@@ -893,17 +905,6 @@ body.dark .pill-frame {
         <label for="cpq-consent">Yes, I agree to receive emails about my Compassion Profile from Send Relief</label>
       </div>
       <button class="btn-submit" id="btn-submit" disabled>Send me my results &amp; devotional</button>
-    </div>
-  </div>
-
-  <!-- Profile Carousel (desktop only) -->
-  <div class="profile-carousel" id="profile-carousel">
-    <div class="carousel-track" id="carousel-track">
-      <div class="carousel-slide" data-profile="responder"><img src="icon-responder.svg" alt="" class="carousel-icon"><img src="label-responder.svg" alt="The Responder" class="carousel-label"></div>
-      <div class="carousel-slide" data-profile="protector"><img src="icon-protector.svg" alt="" class="carousel-icon"><img src="label-protector.svg" alt="The Protector" class="carousel-label"></div>
-      <div class="carousel-slide" data-profile="champion"><img src="icon-champion.svg" alt="" class="carousel-icon"><img src="label-champion.svg" alt="The Champion" class="carousel-label"></div>
-      <div class="carousel-slide" data-profile="visionary"><img src="icon-visionary.svg" alt="" class="carousel-icon"><img src="label-visionary.svg" alt="The Visionary" class="carousel-label"></div>
-      <div class="carousel-slide" data-profile="mentor"><img src="icon-mentor.svg" alt="" class="carousel-icon"><img src="label-mentor.svg" alt="The Mentor" class="carousel-label"></div>
     </div>
   </div>
 
@@ -1195,35 +1196,34 @@ body.dark .pill-frame {
     var isDarkMode = document.body.classList.contains('dark');
     document.querySelector('.pill-frame').style.background = isDarkMode ? '#1A1A1A' : '#FAF7F2';
 
-    // Desktop carousel animation
+    // Desktop: header expands into carousel
     if (window.innerWidth > 600) {
-      var carousel = document.getElementById('profile-carousel');
-      var track = document.getElementById('carousel-track');
+      var header = document.getElementById('quiz-header');
+      var headerCarousel = document.getElementById('header-carousel');
+      var headerTrack = document.getElementById('header-carousel-track');
       var profiles = ['responder', 'protector', 'champion', 'visionary', 'mentor'];
       var targetIndex = profiles.indexOf(profile);
 
-      carousel.classList.add('active');
+      // Switch header to result mode (hides static SVG, shows carousel)
+      header.classList.add('result-mode');
+      headerCarousel.classList.add('active');
 
-      // Start from a random-ish position and spin through
-      var totalSpins = 2; // full cycles before landing
+      // Duplicate slides for spinning
+      var totalSpins = 2;
       var totalSlides = (totalSpins * 5) + targetIndex;
-      var currentSlide = 0;
-
-      // Duplicate slides in the track for smooth spinning
-      var originalHTML = track.innerHTML;
+      var originalHTML = headerTrack.innerHTML;
       for (var s = 0; s < totalSpins + 1; s++) {
-        track.innerHTML += originalHTML;
+        headerTrack.innerHTML += originalHTML;
       }
 
-      // Animate through slides
-      track.style.transition = 'none';
-      track.style.transform = 'translateX(0)';
+      // Animate
+      headerTrack.style.transition = 'none';
+      headerTrack.style.transform = 'translateX(0)';
 
       setTimeout(function() {
-        // Ease-out spin to landing position
         var duration = 2 + (totalSlides * 0.15);
-        track.style.transition = 'transform ' + duration + 's cubic-bezier(0.15, 0.85, 0.35, 1)';
-        track.style.transform = 'translateX(-' + (totalSlides * 100) + '%)';
+        headerTrack.style.transition = 'transform ' + duration + 's cubic-bezier(0.15, 0.85, 0.35, 1)';
+        headerTrack.style.transform = 'translateX(-' + (totalSlides * 100) + '%)';
       }, 100);
     }
 
