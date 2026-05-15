@@ -665,6 +665,10 @@ body.dark .pill-frame {
   gap: 0;
   padding: 20px 10px 0;
   position: relative;
+  overflow: visible;
+}
+
+.header-icons.result-anim {
   overflow: hidden;
 }
 
@@ -1316,20 +1320,25 @@ body.dark .pill-frame {
       labelResult.innerHTML = '<img src="label-' + profile + '.svg" alt="' + profile + '">';
 
       var iconWidth = 72; // 60px icon + 12px margin
-      var setWidth = profiles.length * iconWidth;
 
-      // Duplicate icons 6 times so we have enough for 3 full visual cycles
-      var originalHTML = iconsRow.innerHTML;
+      // Duplicate icons using cloneNode so original refs stay valid
+      var originalItems = Array.from(icons);
       for (var d = 0; d < 5; d++) {
-        iconsRow.innerHTML += originalHTML;
+        originalItems.forEach(function(item) {
+          var clone = item.cloneNode(true);
+          clone.classList.add('clone');
+          iconsRow.appendChild(clone);
+        });
       }
 
-      // Calculate total distance: 3 full cycles + offset to land on winner
+      // Calculate spin distance: 3 full cycles + land on winner
+      var setWidth = profiles.length * iconWidth;
       var totalDistance = (setWidth * 3) + (targetIndex * iconWidth);
 
+      // Start from flex-start so all icons flow left-to-right
+      iconsRow.style.justifyContent = 'flex-start';
       iconsRow.style.transition = 'none';
       iconsRow.style.transform = 'translateX(0)';
-      iconsRow.style.justifyContent = 'flex-start';
 
       requestAnimationFrame(function() {
         requestAnimationFrame(function() {
@@ -1337,18 +1346,15 @@ body.dark .pill-frame {
           iconsRow.style.transition = 'transform 3s cubic-bezier(0.1, 0, 0.2, 1)';
           iconsRow.style.transform = 'translateX(' + (-totalDistance) + 'px)';
 
-          // Phase 2 (3.5s): Remove duplicates, keep only originals, fade out non-winners
+          // Phase 2 (3.2s): Remove clones, fade out non-winners
           setTimeout(function() {
-            // Reset to just original 5 icons
-            var allIcons = iconsRow.querySelectorAll('.header-icon-item');
-            for (var i = profiles.length; i < allIcons.length; i++) {
-              allIcons[i].remove();
-            }
+            // Remove all clones
+            iconsRow.querySelectorAll('.clone').forEach(function(c) { c.remove(); });
             iconsRow.style.transition = 'none';
             iconsRow.style.transform = 'translateX(0)';
             iconsRow.style.justifyContent = 'center';
 
-            // Fade out non-winners
+            // Fade out non-winners (original refs still valid)
             icons.forEach(function(icon) {
               var p = icon.getAttribute('data-profile');
               if (p !== profile) {
@@ -1357,7 +1363,7 @@ body.dark .pill-frame {
             });
           }, 3200);
 
-          // Phase 3 (4s): Grow winner, crossfade label
+          // Phase 3 (4.2s): Grow winner, crossfade label
           setTimeout(function() {
             icons.forEach(function(icon) {
               var p = icon.getAttribute('data-profile');
@@ -1366,7 +1372,6 @@ body.dark .pill-frame {
               }
             });
 
-            // Crossfade the label
             labelTitle.style.opacity = '0';
             labelResult.classList.add('visible');
           }, 4200);
