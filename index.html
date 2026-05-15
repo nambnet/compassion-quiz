@@ -528,14 +528,14 @@ body.dark .progress-wrap {
   display: block;
 }
 
-/* Result background: colored layer + ghost icon on top */
+/* Result background */
 #result-bg {
   display: none;
   position: fixed;
   top: 0;
   left: 0;
-  width: 100vw;
-  height: 100vh;
+  width: 100%;
+  height: 100%;
   z-index: 0;
 }
 
@@ -543,22 +543,9 @@ body.dark .progress-wrap {
   display: block;
 }
 
-#body-ghost {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  overflow: hidden;
-}
-
-#body-ghost img {
-  width: 100%;
-  height: auto;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+#result-bg img {
+  width: 100vw;
+  display: block;
 }
 
 .pill-frame {
@@ -667,7 +654,7 @@ body.dark .pill-frame {
 <button class="dark-toggle" id="dark-toggle" aria-label="Toggle dark mode">&#9790;</button>
 
 <div id="result-bg">
-  <div id="body-ghost"><img id="body-ghost-img" src="" alt=""></div>
+  <img id="result-bg-img" src="" alt="">
 </div>
 
 <div class="pill-frame">
@@ -1096,12 +1083,11 @@ body.dark .pill-frame {
     var resultEl = document.getElementById('result-' + profile);
     if (resultEl) resultEl.classList.add('active');
 
-    // Show colored background + ghost icon
+    // Show result background
     var resultBg = document.getElementById('result-bg');
     resultBg.style.backgroundColor = resultBgColors[profile] || '#7C92AE';
+    document.getElementById('result-bg-img').src = 'ghost-' + profile + '.svg';
     resultBg.classList.add('active');
-    document.getElementById('body-ghost-img').src = 'ghost-' + profile + '.svg';
-    // Force pill interior to cream regardless of dark mode
     document.querySelector('.pill-frame').style.background = '#FAF7F2';
 
     window.scrollTo({ top: 0, behavior: 'smooth' });
