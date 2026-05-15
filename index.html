@@ -690,11 +690,13 @@ body.dark .pill-frame {
 /* Label area below icons */
 .header-label {
   position: relative;
-  min-height: 60px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  min-height: 80px;
   padding: 8px 0 0;
+  transition: min-height 0.6s ease;
+}
+
+.header-label.result-anim {
+  min-height: 120px;
 }
 
 .header-label-title {
@@ -742,19 +744,20 @@ body.dark .pill-frame {
 
 .header-label-result {
   position: absolute;
-  top: 8px;
-  left: 50%;
-  transform: translateX(-50%);
+  top: 0;
+  left: 0;
+  right: 0;
   opacity: 0;
   transition: opacity 0.6s ease;
-  width: 85%;
-  max-width: 420px;
+  padding: 8px 20px;
 }
 
 .header-label-result img {
-  width: 100%;
+  width: 80%;
+  max-width: 400px;
   height: auto;
   display: block;
+  margin: 0 auto;
 }
 
 .header-label-result.visible {
@@ -1319,7 +1322,7 @@ body.dark .pill-frame {
       var step = iconWidth + gap;
       // Current center is index 2. We need to shift by (targetIndex - 2) * step pixels
       // But first do a fast "spin" effect: shift far left then ease to center
-      var spinDistance = (profiles.length * step);  // one full cycle
+      var spinDistance = (profiles.length * step) * 3;  // three full cycles
       var centerOffset = (targetIndex - 2) * step;
 
       iconsRow.style.transition = 'none';
@@ -1328,17 +1331,17 @@ body.dark .pill-frame {
       // Start the shuffle: move left quickly (like spinning), then settle on the winner
       requestAnimationFrame(function() {
         requestAnimationFrame(function() {
-          // Phase 1a: Quick spin left
-          iconsRow.style.transition = 'transform 0.8s cubic-bezier(0.2, 0, 0.8, 1)';
+          // Phase 1a: Spin left through 3 full cycles
+          iconsRow.style.transition = 'transform 2.5s cubic-bezier(0.2, 0, 0.8, 1)';
           iconsRow.style.transform = 'translateX(' + (-spinDistance) + 'px)';
 
           // Phase 1b: Settle back to center the winner
           setTimeout(function() {
             iconsRow.style.transition = 'transform 1.0s cubic-bezier(0.25, 0.8, 0.25, 1)';
             iconsRow.style.transform = 'translateX(' + (-centerOffset) + 'px)';
-          }, 800);
+          }, 2500);
 
-          // Phase 2 (2s): Fade out non-winners
+          // Phase 2 (3.8s): Fade out non-winners
           setTimeout(function() {
             icons.forEach(function(icon) {
               var p = icon.getAttribute('data-profile');
@@ -1346,9 +1349,9 @@ body.dark .pill-frame {
                 icon.classList.add('fade-out');
               }
             });
-          }, 2000);
+          }, 3800);
 
-          // Phase 3 (2.5s): Grow winner, crossfade label
+          // Phase 3 (4.5s): Grow winner, crossfade label
           setTimeout(function() {
             // Remove translateX since losers are gone and flex will re-center
             iconsRow.style.transition = 'transform 0.5s ease';
@@ -1365,7 +1368,7 @@ body.dark .pill-frame {
             // Crossfade the label
             labelTitle.style.opacity = '0';
             labelResult.classList.add('visible');
-          }, 2500);
+          }, 4500);
         });
       });
     }
