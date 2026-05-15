@@ -702,10 +702,42 @@ body.dark .pill-frame {
   width: 100%;
 }
 
-.header-label-title img {
-  width: 100%;
-  height: auto;
+.quiz-title-text {
+  text-align: center;
+  padding: 5px 0 10px;
+}
+
+.quiz-title-the {
   display: block;
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 0.85rem;
+  font-weight: 600;
+  letter-spacing: 0.35em;
+  text-transform: uppercase;
+  color: var(--navy);
+  margin-bottom: 2px;
+}
+
+.quiz-title-main {
+  display: block;
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 2.2rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--navy);
+  line-height: 1.1;
+}
+
+.quiz-title-sub {
+  display: block;
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 0.9rem;
+  font-weight: 600;
+  letter-spacing: 0.4em;
+  text-transform: uppercase;
+  color: var(--navy);
+  margin-top: 4px;
 }
 
 .header-label-result {
@@ -831,7 +863,11 @@ body.dark .pill-frame {
     </div>
     <div class="header-label" id="header-label">
       <div class="header-label-title" id="header-label-title">
-        <img src="header-graphic.svg" alt="The Compassion Profile Quiz">
+        <div class="quiz-title-text">
+          <span class="quiz-title-the">THE</span>
+          <span class="quiz-title-main">COMPASSION PROFILE</span>
+          <span class="quiz-title-sub">QUIZ</span>
+        </div>
       </div>
       <div class="header-label-result" id="header-label-result"></div>
     </div>
