@@ -1127,6 +1127,11 @@ body.dark .pill-frame {
     isDark = document.body.classList.contains('dark');
     localStorage.setItem('cpq-dark', isDark);
     updateDarkIcon();
+    // Update pill background if on results page
+    var resultBg = document.getElementById('result-bg');
+    if (resultBg.classList.contains('active')) {
+      document.querySelector('.pill-frame').style.background = isDark ? '#1A1A1A' : '#FAF7F2';
+    }
   });
 
   function updateDarkIcon() {
