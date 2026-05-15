@@ -537,18 +537,13 @@ body.dark .progress-wrap {
   width: 100%;
   height: 100%;
   z-index: 0;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
 }
 
 #result-bg.active {
   display: block;
-}
-
-#result-bg img {
-  width: 100vw;
-  position: absolute;
-  top: 50%;
-  left: 0;
-  transform: translateY(-50%);
 }
 
 .pill-frame {
@@ -656,9 +651,7 @@ body.dark .pill-frame {
 
 <button class="dark-toggle" id="dark-toggle" aria-label="Toggle dark mode">&#9790;</button>
 
-<div id="result-bg">
-  <img id="result-bg-img" src="" alt="">
-</div>
+<div id="result-bg"></div>
 
 <div class="pill-frame">
   <div class="pill-border">
@@ -1088,8 +1081,7 @@ body.dark .pill-frame {
 
     // Show result background
     var resultBg = document.getElementById('result-bg');
-    resultBg.style.backgroundColor = resultBgColors[profile] || '#7C92AE';
-    document.getElementById('result-bg-img').src = 'ghost-' + profile + '.svg';
+    resultBg.style.backgroundImage = "url('bg-" + profile + ".png')";
     resultBg.classList.add('active');
     document.querySelector('.pill-frame').style.background = '#FAF7F2';
 
