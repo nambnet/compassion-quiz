@@ -641,6 +641,60 @@ body.dark .pill-frame {
   margin-bottom: 6px;
 }
 
+/* Profile Carousel */
+.profile-carousel {
+  display: none;
+  overflow: hidden;
+  border-radius: 16px;
+  margin-bottom: 24px;
+  position: relative;
+  width: 100%;
+}
+
+.profile-carousel.active {
+  display: block;
+}
+
+.carousel-track {
+  display: flex;
+  transition: transform 0.4s cubic-bezier(0.25, 0.1, 0.25, 1);
+  will-change: transform;
+}
+
+.carousel-slide {
+  min-width: 100%;
+  text-align: center;
+}
+
+.carousel-slide img:first-child {
+  width: 100%;
+  border-radius: 16px;
+  display: block;
+}
+
+.carousel-label {
+  width: 80%;
+  margin: 12px auto 0;
+  display: block;
+}
+
+/* Hide static result graphic on desktop, show carousel instead */
+@media (min-width: 601px) {
+  .result-graphic-mobile {
+    display: none;
+  }
+}
+
+/* On mobile, hide carousel and show static graphic */
+@media (max-width: 600px) {
+  .profile-carousel {
+    display: none !important;
+  }
+  .result-graphic-mobile {
+    display: block;
+  }
+}
+
 /* Loading spinner */
 .spinner {
   display: inline-block;
@@ -825,10 +879,21 @@ body.dark .pill-frame {
     </div>
   </div>
 
+  <!-- Profile Carousel (desktop only) -->
+  <div class="profile-carousel" id="profile-carousel">
+    <div class="carousel-track" id="carousel-track">
+      <div class="carousel-slide" data-profile="responder"><img src="result-responder.jpg" alt="The Responder"><img src="label-responder.svg" alt="" class="carousel-label"></div>
+      <div class="carousel-slide" data-profile="protector"><img src="result-protector.jpg" alt="The Protector"><img src="label-protector.svg" alt="" class="carousel-label"></div>
+      <div class="carousel-slide" data-profile="champion"><img src="result-champion.jpg" alt="The Champion"><img src="label-champion.svg" alt="" class="carousel-label"></div>
+      <div class="carousel-slide" data-profile="visionary"><img src="result-visionary.jpg" alt="The Visionary"><img src="label-visionary.svg" alt="" class="carousel-label"></div>
+      <div class="carousel-slide" data-profile="mentor"><img src="result-mentor.jpg" alt="The Mentor"><img src="label-mentor.svg" alt="" class="carousel-label"></div>
+    </div>
+  </div>
+
   <!-- RESULTS (5 profiles, shown after submit) -->
   <div class="result-page" id="result-responder">
 
-    <img src="result-responder.jpg" alt="The Responder" class="result-graphic">
+    <img src="result-responder.jpg" alt="The Responder" class="result-graphic result-graphic-mobile">
     <div class="result-body">
       <p>You notice needs quickly and move toward them without hesitation. Whether someone is hurting, celebrating, or simply in need of support, you step in with care, presence, and practical help. You don't wait to be asked. You respond.</p>
       <h3 class="biblical-anchor">Biblical Anchor: Tabitha</h3>
@@ -844,7 +909,7 @@ body.dark .pill-frame {
 
   <div class="result-page" id="result-protector">
 
-    <img src="result-protector.jpg" alt="The Protector" class="result-graphic">
+    <img src="result-protector.jpg" alt="The Protector" class="result-graphic result-graphic-mobile">
     <div class="result-body">
       <p>You're the one who notices when something isn't right. When someone is in a vulnerable situation, dismissed, or at risk, something in you rises up. You don't walk away from people who need someone in their corner. You step in, you speak up, and you stay.</p>
       <h3 class="biblical-anchor">Biblical Anchor: Esther</h3>
@@ -860,7 +925,7 @@ body.dark .pill-frame {
 
   <div class="result-page" id="result-champion">
 
-    <img src="result-champion.jpg" alt="The Champion" class="result-graphic">
+    <img src="result-champion.jpg" alt="The Champion" class="result-graphic result-graphic-mobile">
     <div class="result-body">
       <p>You're the one who names what others won't. When something moves your heart, you can't stay quiet. You help people understand what's happening, why it matters, and what they can do — through your words, your relationships, and the way you tell a story.</p>
       <h3 class="biblical-anchor">Biblical Anchor: Deborah</h3>
@@ -876,7 +941,7 @@ body.dark .pill-frame {
 
   <div class="result-page" id="result-visionary">
 
-    <img src="result-visionary.jpg" alt="The Visionary" class="result-graphic">
+    <img src="result-visionary.jpg" alt="The Visionary" class="result-graphic result-graphic-mobile">
     <div class="result-body">
       <p>You're the one who sees what could be. When something is broken, you don't just feel sad about it — you start thinking about how to fix it. You care about lasting change, not quick fixes, and you're willing to stay in a hard place long enough to see something new take shape.</p>
       <h3 class="biblical-anchor">Biblical Anchor: Lydia</h3>
@@ -892,7 +957,7 @@ body.dark .pill-frame {
 
   <div class="result-page" id="result-mentor">
 
-    <img src="result-mentor.jpg" alt="The Mentor" class="result-graphic">
+    <img src="result-mentor.jpg" alt="The Mentor" class="result-graphic result-graphic-mobile">
     <div class="result-body">
       <p>You pay attention to people. You care deeply about spiritual growth and create space for discipleship and community. You notice what God is doing in someone and help draw it out, offering encouragement and truth so they can step into what God is calling them to do.</p>
       <h3 class="biblical-anchor">Biblical Anchor: Priscilla</h3>
@@ -1112,6 +1177,38 @@ body.dark .pill-frame {
     resultBg.classList.add('active');
     var isDarkMode = document.body.classList.contains('dark');
     document.querySelector('.pill-frame').style.background = isDarkMode ? '#1A1A1A' : '#FAF7F2';
+
+    // Desktop carousel animation
+    if (window.innerWidth > 600) {
+      var carousel = document.getElementById('profile-carousel');
+      var track = document.getElementById('carousel-track');
+      var profiles = ['responder', 'protector', 'champion', 'visionary', 'mentor'];
+      var targetIndex = profiles.indexOf(profile);
+
+      carousel.classList.add('active');
+
+      // Start from a random-ish position and spin through
+      var totalSpins = 2; // full cycles before landing
+      var totalSlides = (totalSpins * 5) + targetIndex;
+      var currentSlide = 0;
+
+      // Duplicate slides in the track for smooth spinning
+      var originalHTML = track.innerHTML;
+      for (var s = 0; s < totalSpins + 1; s++) {
+        track.innerHTML += originalHTML;
+      }
+
+      // Animate through slides
+      track.style.transition = 'none';
+      track.style.transform = 'translateX(0)';
+
+      setTimeout(function() {
+        // Ease-out spin to landing position
+        var duration = 2 + (totalSlides * 0.15);
+        track.style.transition = 'transform ' + duration + 's cubic-bezier(0.15, 0.85, 0.35, 1)';
+        track.style.transform = 'translateX(-' + (totalSlides * 100) + '%)';
+      }, 100);
+    }
 
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
