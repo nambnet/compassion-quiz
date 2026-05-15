@@ -665,15 +665,21 @@ body.dark .pill-frame {
   gap: 0;
   padding: 20px 10px 0;
   position: relative;
+  z-index: 2;
   overflow: visible;
 }
 
 .header-icons.spinning {
   overflow: visible;
+  /* Gradient feather: fade icons to transparent at both edges */
+  -webkit-mask-image: linear-gradient(to right,
+    transparent 0%, black 15%, black 85%, transparent 100%);
+  mask-image: linear-gradient(to right,
+    transparent 0%, black 15%, black 85%, transparent 100%);
 }
 
 .header-icons.settled {
-  overflow: hidden;
+  overflow: visible;
 }
 
 .header-icon-item {
@@ -698,9 +704,11 @@ body.dark .pill-frame {
 /* Label area below icons */
 .header-label {
   position: relative;
+  z-index: 1;
   min-height: 80px;
   padding: 8px 0 0;
   transition: min-height 0.6s ease;
+  background: transparent;
 }
 
 .header-label.result-anim {
@@ -791,11 +799,12 @@ body.dark .pill-frame {
               height 0.6s cubic-bezier(0.4, 0, 0.2, 1) 0.2s;
 }
 
-/* Animation: winner grows */
+/* Animation: winner grows — positioned so z-index lifts it above the label */
 .header-icon-item.winner {
+  position: relative;
+  z-index: 2;
   width: 180px;
   height: 180px;
-  z-index: 2;
   margin-bottom: -10px;
 }
 
@@ -1300,12 +1309,10 @@ body.dark .pill-frame {
     var resultEl = document.getElementById('result-' + profile);
     if (resultEl) resultEl.classList.add('active');
 
-    // Show result background
+    // Preload result background (activated after icon spin on desktop)
     var resultBg = document.getElementById('result-bg');
     resultBg.style.backgroundImage = "url('bg-" + profile + ".png')";
-    resultBg.classList.add('active');
     var isDarkMode = document.body.classList.contains('dark');
-    document.querySelector('.pill-frame').style.background = isDarkMode ? '#1A1A1A' : '#FAF7F2';
 
     // Desktop: animated icon transition
     if (window.innerWidth > 600) {
@@ -1327,6 +1334,8 @@ body.dark .pill-frame {
 
       var iconWidth = 72; // 60px icon + 12px margin
 
+      var pillFrame = document.querySelector('.pill-frame');
+
       // Duplicate icons using cloneNode so original refs stay valid
       var originalItems = Array.from(icons);
       for (var d = 0; d < 5; d++) {
@@ -1346,8 +1355,6 @@ body.dark .pill-frame {
       iconsRow.classList.add('spinning');
       iconsRow.style.transition = 'none';
       iconsRow.style.transform = 'translateX(0)';
-      // Temporarily allow overflow on pill-frame during spin
-      document.querySelector('.pill-frame').style.overflow = 'visible';
 
       requestAnimationFrame(function() {
         requestAnimationFrame(function() {
@@ -1364,7 +1371,9 @@ body.dark .pill-frame {
             iconsRow.style.justifyContent = 'center';
             iconsRow.classList.remove('spinning');
             iconsRow.classList.add('settled');
-            document.querySelector('.pill-frame').style.overflow = 'hidden';
+            // Reveal result background
+            pillFrame.style.background = isDarkMode ? '#1A1A1A' : '#FAF7F2';
+            resultBg.classList.add('active');
 
             // Fade out non-winners (original refs still valid)
             icons.forEach(function(icon) {
@@ -1389,6 +1398,10 @@ body.dark .pill-frame {
           }, 4200);
         });
       });
+    } else {
+      // Mobile: no animation, show background immediately
+      resultBg.classList.add('active');
+      document.querySelector('.pill-frame').style.background = isDarkMode ? '#1A1A1A' : '#FAF7F2';
     }
 
     window.scrollTo({ top: 0, behavior: 'smooth' });
