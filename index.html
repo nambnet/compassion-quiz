@@ -1115,8 +1115,14 @@ body.dark .pill-frame {
     darkBtn.innerHTML = document.body.classList.contains('dark') ? '&#9788;' : '&#9790;';
   }
 
-  // Initialize
-  showStep(1);
+  // Initialize — check for ?result= param to jump to results
+  var urlParams = new URLSearchParams(window.location.search);
+  var debugResult = urlParams.get('result');
+  if (debugResult && resultBgColors[debugResult]) {
+    showResult(debugResult);
+  } else {
+    showStep(1);
+  }
 })();
 </script>
 
