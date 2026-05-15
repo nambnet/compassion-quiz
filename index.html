@@ -645,7 +645,6 @@ body.dark .pill-frame {
 .profile-carousel {
   display: none;
   overflow: hidden;
-  border-radius: 16px;
   margin-bottom: 24px;
   position: relative;
   width: 100%;
@@ -657,24 +656,27 @@ body.dark .pill-frame {
 
 .carousel-track {
   display: flex;
-  transition: transform 0.4s cubic-bezier(0.25, 0.1, 0.25, 1);
   will-change: transform;
 }
 
 .carousel-slide {
   min-width: 100%;
   text-align: center;
+  padding: 30px 40px 20px;
 }
 
-.carousel-slide img:first-child {
-  width: 100%;
-  border-radius: 16px;
+.carousel-icon {
+  width: 50%;
+  max-width: 220px;
+  height: auto;
   display: block;
+  margin: 0 auto 16px;
 }
 
 .carousel-label {
-  width: 80%;
-  margin: 12px auto 0;
+  width: 85%;
+  max-width: 400px;
+  margin: 0 auto;
   display: block;
 }
 
@@ -882,11 +884,11 @@ body.dark .pill-frame {
   <!-- Profile Carousel (desktop only) -->
   <div class="profile-carousel" id="profile-carousel">
     <div class="carousel-track" id="carousel-track">
-      <div class="carousel-slide" data-profile="responder"><img src="result-responder.jpg" alt="The Responder"><img src="label-responder.svg" alt="" class="carousel-label"></div>
-      <div class="carousel-slide" data-profile="protector"><img src="result-protector.jpg" alt="The Protector"><img src="label-protector.svg" alt="" class="carousel-label"></div>
-      <div class="carousel-slide" data-profile="champion"><img src="result-champion.jpg" alt="The Champion"><img src="label-champion.svg" alt="" class="carousel-label"></div>
-      <div class="carousel-slide" data-profile="visionary"><img src="result-visionary.jpg" alt="The Visionary"><img src="label-visionary.svg" alt="" class="carousel-label"></div>
-      <div class="carousel-slide" data-profile="mentor"><img src="result-mentor.jpg" alt="The Mentor"><img src="label-mentor.svg" alt="" class="carousel-label"></div>
+      <div class="carousel-slide" data-profile="responder"><img src="icon-responder.svg" alt="" class="carousel-icon"><img src="label-responder.svg" alt="The Responder" class="carousel-label"></div>
+      <div class="carousel-slide" data-profile="protector"><img src="icon-protector.svg" alt="" class="carousel-icon"><img src="label-protector.svg" alt="The Protector" class="carousel-label"></div>
+      <div class="carousel-slide" data-profile="champion"><img src="icon-champion.svg" alt="" class="carousel-icon"><img src="label-champion.svg" alt="The Champion" class="carousel-label"></div>
+      <div class="carousel-slide" data-profile="visionary"><img src="icon-visionary.svg" alt="" class="carousel-icon"><img src="label-visionary.svg" alt="The Visionary" class="carousel-label"></div>
+      <div class="carousel-slide" data-profile="mentor"><img src="icon-mentor.svg" alt="" class="carousel-icon"><img src="label-mentor.svg" alt="The Mentor" class="carousel-label"></div>
     </div>
   </div>
 
