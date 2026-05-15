@@ -153,6 +153,23 @@ body {
   left: 0;
 }
 
+/* SR Logo */
+.sr-logo-link {
+  position: fixed;
+  top: 16px;
+  left: 16px;
+  z-index: 100;
+}
+
+.sr-logo {
+  height: 30px;
+  width: auto;
+}
+
+body.dark .sr-logo {
+  filter: brightness(0) invert(1);
+}
+
 /* Dark Mode */
 .dark-toggle {
   position: fixed;
@@ -656,6 +673,9 @@ body.dark .pill-frame {
 </head>
 <body>
 
+<a href="https://www.sendrelief.org" class="sr-logo-link" aria-label="Send Relief homepage">
+  <img src="sr-logo.png" alt="Send Relief" class="sr-logo">
+</a>
 <button class="dark-toggle" id="dark-toggle" aria-label="Toggle dark mode">&#9790;</button>
 
 <div id="result-bg"></div>
