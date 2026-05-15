@@ -1110,7 +1110,8 @@ body.dark .pill-frame {
     var resultBg = document.getElementById('result-bg');
     resultBg.style.backgroundImage = "url('bg-" + profile + ".png')";
     resultBg.classList.add('active');
-    document.querySelector('.pill-frame').style.background = '#FAF7F2';
+    var isDarkMode = document.body.classList.contains('dark');
+    document.querySelector('.pill-frame').style.background = isDarkMode ? '#1A1A1A' : '#FAF7F2';
 
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
