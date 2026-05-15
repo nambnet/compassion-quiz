@@ -693,9 +693,32 @@ body.dark .pill-frame {
   display: block;
 }
 
-/* Header expanding animation */
+/* Header → Result transition */
+.quiz-header #header-img {
+  transition: opacity 0.6s ease, transform 0.8s ease;
+}
+
 .quiz-header.result-mode #header-img {
-  display: none;
+  opacity: 0;
+  transform: scale(0.9);
+  position: absolute;
+  pointer-events: none;
+}
+
+.quiz-header {
+  position: relative;
+  transition: padding 0.6s ease;
+}
+
+.header-carousel {
+  opacity: 0;
+  transform: scale(0.4);
+  transition: opacity 0.6s ease 0.3s, transform 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) 0.3s;
+}
+
+.header-carousel.active.animate-in {
+  opacity: 1;
+  transform: scale(1);
 }
 
 /* Hide static result graphic on desktop when carousel active */
@@ -1196,7 +1219,7 @@ body.dark .pill-frame {
     var isDarkMode = document.body.classList.contains('dark');
     document.querySelector('.pill-frame').style.background = isDarkMode ? '#1A1A1A' : '#FAF7F2';
 
-    // Desktop: header expands into carousel
+    // Desktop: header transforms into carousel
     if (window.innerWidth > 600) {
       var header = document.getElementById('quiz-header');
       var headerCarousel = document.getElementById('header-carousel');
@@ -1204,27 +1227,36 @@ body.dark .pill-frame {
       var profiles = ['responder', 'protector', 'champion', 'visionary', 'mentor'];
       var targetIndex = profiles.indexOf(profile);
 
-      // Switch header to result mode (hides static SVG, shows carousel)
+      // Step 1: Fade out static header
       header.classList.add('result-mode');
-      headerCarousel.classList.add('active');
 
-      // Duplicate slides for spinning
-      var totalSpins = 2;
-      var totalSlides = (totalSpins * 5) + targetIndex;
-      var originalHTML = headerTrack.innerHTML;
-      for (var s = 0; s < totalSpins + 1; s++) {
-        headerTrack.innerHTML += originalHTML;
-      }
-
-      // Animate
-      headerTrack.style.transition = 'none';
-      headerTrack.style.transform = 'translateX(0)';
-
+      // Step 2: After header fades, show carousel small and grow it in
       setTimeout(function() {
-        var duration = 2 + (totalSlides * 0.15);
-        headerTrack.style.transition = 'transform ' + duration + 's cubic-bezier(0.15, 0.85, 0.35, 1)';
-        headerTrack.style.transform = 'translateX(-' + (totalSlides * 100) + '%)';
-      }, 100);
+        headerCarousel.classList.add('active');
+
+        // Duplicate slides for spinning
+        var totalSpins = 2;
+        var totalSlides = (totalSpins * 5) + targetIndex;
+        var originalHTML = headerTrack.innerHTML;
+        for (var s = 0; s < totalSpins + 1; s++) {
+          headerTrack.innerHTML += originalHTML;
+        }
+
+        headerTrack.style.transition = 'none';
+        headerTrack.style.transform = 'translateX(0)';
+
+        // Step 3: Grow carousel from small to full size
+        requestAnimationFrame(function() {
+          headerCarousel.classList.add('animate-in');
+
+          // Step 4: After grow-in completes, start spinning
+          setTimeout(function() {
+            var duration = 2 + (totalSlides * 0.15);
+            headerTrack.style.transition = 'transform ' + duration + 's cubic-bezier(0.15, 0.85, 0.35, 1)';
+            headerTrack.style.transform = 'translateX(-' + (totalSlides * 100) + '%)';
+          }, 800);
+        });
+      }, 400);
     }
 
     window.scrollTo({ top: 0, behavior: 'smooth' });
