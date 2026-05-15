@@ -696,7 +696,7 @@ body.dark .pill-frame {
 }
 
 .header-label.result-anim {
-  min-height: 120px;
+  min-height: 160px;
 }
 
 .header-label-title {
@@ -1315,49 +1315,50 @@ body.dark .pill-frame {
       // Prepare the result label SVG
       labelResult.innerHTML = '<img src="label-' + profile + '.svg" alt="' + profile + '">';
 
-      // Phase 1 (0-1.8s): Carousel shuffle — shift icons left/right via translateX
-      // We shift so the winner ends up roughly centered
-      var iconWidth = 60;
-      var gap = 12;
-      var step = iconWidth + gap;
-      // Current center is index 2. We need to shift by (targetIndex - 2) * step pixels
-      // But first do a fast "spin" effect: shift far left then ease to center
-      var spinDistance = (profiles.length * step) * 3;  // three full cycles
-      var centerOffset = (targetIndex - 2) * step;
+      var iconWidth = 72; // 60px icon + 12px margin
+      var setWidth = profiles.length * iconWidth;
+
+      // Duplicate icons 6 times so we have enough for 3 full visual cycles
+      var originalHTML = iconsRow.innerHTML;
+      for (var d = 0; d < 5; d++) {
+        iconsRow.innerHTML += originalHTML;
+      }
+
+      // Calculate total distance: 3 full cycles + offset to land on winner
+      var totalDistance = (setWidth * 3) + (targetIndex * iconWidth);
 
       iconsRow.style.transition = 'none';
       iconsRow.style.transform = 'translateX(0)';
+      iconsRow.style.justifyContent = 'flex-start';
 
-      // Start the shuffle: move left quickly (like spinning), then settle on the winner
       requestAnimationFrame(function() {
         requestAnimationFrame(function() {
-          // Phase 1a: Spin left through 3 full cycles
-          iconsRow.style.transition = 'transform 2.5s cubic-bezier(0.2, 0, 0.8, 1)';
-          iconsRow.style.transform = 'translateX(' + (-spinDistance) + 'px)';
+          // Phase 1 (0-3s): Spin through icons with deceleration
+          iconsRow.style.transition = 'transform 3s cubic-bezier(0.1, 0, 0.2, 1)';
+          iconsRow.style.transform = 'translateX(' + (-totalDistance) + 'px)';
 
-          // Phase 1b: Settle back to center the winner
+          // Phase 2 (3.5s): Remove duplicates, keep only originals, fade out non-winners
           setTimeout(function() {
-            iconsRow.style.transition = 'transform 1.0s cubic-bezier(0.25, 0.8, 0.25, 1)';
-            iconsRow.style.transform = 'translateX(' + (-centerOffset) + 'px)';
-          }, 2500);
+            // Reset to just original 5 icons
+            var allIcons = iconsRow.querySelectorAll('.header-icon-item');
+            for (var i = profiles.length; i < allIcons.length; i++) {
+              allIcons[i].remove();
+            }
+            iconsRow.style.transition = 'none';
+            iconsRow.style.transform = 'translateX(0)';
+            iconsRow.style.justifyContent = 'center';
 
-          // Phase 2 (3.8s): Fade out non-winners
-          setTimeout(function() {
+            // Fade out non-winners
             icons.forEach(function(icon) {
               var p = icon.getAttribute('data-profile');
               if (p !== profile) {
                 icon.classList.add('fade-out');
               }
             });
-          }, 3800);
+          }, 3200);
 
-          // Phase 3 (4.5s): Grow winner, crossfade label
+          // Phase 3 (4s): Grow winner, crossfade label
           setTimeout(function() {
-            // Remove translateX since losers are gone and flex will re-center
-            iconsRow.style.transition = 'transform 0.5s ease';
-            iconsRow.style.transform = 'translateX(0)';
-
-            // Grow winner icon
             icons.forEach(function(icon) {
               var p = icon.getAttribute('data-profile');
               if (p === profile) {
@@ -1368,7 +1369,7 @@ body.dark .pill-frame {
             // Crossfade the label
             labelTitle.style.opacity = '0';
             labelResult.classList.add('visible');
-          }, 4500);
+          }, 4200);
         });
       });
     }
