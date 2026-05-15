@@ -668,7 +668,11 @@ body.dark .pill-frame {
   overflow: visible;
 }
 
-.header-icons.result-anim {
+.header-icons.spinning {
+  overflow: visible;
+}
+
+.header-icons.settled {
   overflow: hidden;
 }
 
@@ -1339,8 +1343,11 @@ body.dark .pill-frame {
 
       // Start from flex-start so all icons flow left-to-right
       iconsRow.style.justifyContent = 'flex-start';
+      iconsRow.classList.add('spinning');
       iconsRow.style.transition = 'none';
       iconsRow.style.transform = 'translateX(0)';
+      // Temporarily allow overflow on pill-frame during spin
+      document.querySelector('.pill-frame').style.overflow = 'visible';
 
       requestAnimationFrame(function() {
         requestAnimationFrame(function() {
@@ -1350,11 +1357,14 @@ body.dark .pill-frame {
 
           // Phase 2 (3.2s): Remove clones, fade out non-winners
           setTimeout(function() {
-            // Remove all clones
+            // Remove all clones and settle
             iconsRow.querySelectorAll('.clone').forEach(function(c) { c.remove(); });
             iconsRow.style.transition = 'none';
             iconsRow.style.transform = 'translateX(0)';
             iconsRow.style.justifyContent = 'center';
+            iconsRow.classList.remove('spinning');
+            iconsRow.classList.add('settled');
+            document.querySelector('.pill-frame').style.overflow = 'hidden';
 
             // Fade out non-winners (original refs still valid)
             icons.forEach(function(icon) {
