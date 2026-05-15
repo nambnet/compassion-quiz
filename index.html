@@ -112,14 +112,10 @@ body::after {
   text-align: center;
   padding: 0;
   margin: calc(-25cqw + 120px) 0 10px;
-  overflow: hidden;
+  overflow: visible;
 }
 
-.quiz-header img {
-  width: 100%;
-  height: auto;
-  display: block;
-}
+/* quiz-header img sizing handled by .header-icon-item and .header-label rules */
 
 .pill-frame {
   container-type: inline-size;
@@ -656,81 +652,121 @@ body.dark .pill-frame {
   margin-bottom: 6px;
 }
 
-/* Header carousel (lives inside quiz-header, revealed on results) */
-.header-carousel {
-  display: none;
-  overflow: hidden;
-  width: 100%;
-}
-
-.header-carousel.active {
-  display: block;
-}
-
-.header-carousel-track {
-  display: flex;
-  will-change: transform;
-}
-
-.header-slide {
-  min-width: 100%;
-  text-align: center;
-  padding: 20px 20px 10px;
-}
-
-.header-slide img:first-child {
-  width: 55%;
-  max-width: 240px;
-  height: auto;
-  display: block;
-  margin: 0 auto 12px;
-}
-
-.header-slide-label {
-  width: 85%;
-  max-width: 420px;
-  margin: 0 auto;
-  display: block;
-}
-
-/* Header → Result transition */
-.quiz-header #header-img {
-  transition: opacity 0.6s ease, transform 0.8s ease;
-}
-
-.quiz-header.result-mode #header-img {
-  opacity: 0;
-  transform: scale(0.9);
-  position: absolute;
-  pointer-events: none;
-}
-
+/* Header icon row */
 .quiz-header {
   position: relative;
   transition: padding 0.6s ease;
 }
 
-.header-carousel {
+.header-icons {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0;
+  padding: 20px 10px 0;
+  position: relative;
+  overflow: hidden;
+}
+
+.header-icon-item {
+  width: 60px;
+  height: 60px;
+  flex-shrink: 0;
+  margin: 0 6px;
+  transition: transform 1.0s cubic-bezier(0.4, 0, 0.2, 1),
+              opacity 0.6s ease,
+              width 0.8s cubic-bezier(0.4, 0, 0.2, 1),
+              height 0.8s cubic-bezier(0.4, 0, 0.2, 1),
+              margin 0.6s cubic-bezier(0.4, 0, 0.2, 1) 0.2s;
+  z-index: 1;
+}
+
+.header-icon-item img {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+/* Label area below icons */
+.header-label {
+  position: relative;
+  min-height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px 0 0;
+}
+
+.header-label-title {
+  transition: opacity 0.5s ease;
+  width: 100%;
+}
+
+.header-label-title img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.header-label-result {
+  position: absolute;
+  top: 8px;
+  left: 50%;
+  transform: translateX(-50%);
   opacity: 0;
-  transform: scale(0.4);
-  transition: opacity 0.6s ease 0.3s, transform 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) 0.3s;
+  transition: opacity 0.6s ease;
+  width: 85%;
+  max-width: 420px;
 }
 
-.header-carousel.active.animate-in {
+.header-label-result img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.header-label-result.visible {
   opacity: 1;
-  transform: scale(1);
 }
 
-/* Hide static result graphic on desktop when carousel active */
+/* Animation: sliding phase — icons shift via translateX on the row */
+.header-icons.sliding {
+  transition: transform 1.8s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+/* Animation: fading out losers */
+.header-icon-item.fade-out {
+  opacity: 0;
+  width: 0;
+  height: 0;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  transition: opacity 0.5s ease,
+              width 0.6s cubic-bezier(0.4, 0, 0.2, 1) 0.2s,
+              height 0.6s cubic-bezier(0.4, 0, 0.2, 1) 0.2s;
+}
+
+/* Animation: winner grows */
+.header-icon-item.winner {
+  width: 180px;
+  height: 180px;
+  z-index: 2;
+}
+
+/* Hide static result graphic on desktop when header animates */
 @media (min-width: 601px) {
   .quiz-header.result-mode ~ .result-page .result-graphic-mobile {
     display: none;
   }
 }
 
-/* On mobile, hide header carousel and show static graphic */
+/* On mobile, hide animated header icons on result and show static graphic */
 @media (max-width: 600px) {
-  .header-carousel {
+  .header-icons.result-anim {
+    display: none !important;
+  }
+  .header-label.result-anim {
     display: none !important;
   }
   .result-graphic-mobile {
@@ -786,15 +822,18 @@ body.dark .pill-frame {
 
   <!-- Header (transforms into result reveal) -->
   <div class="quiz-header" id="quiz-header">
-    <img src="header-graphic.svg" alt="The Compassion Profile Quiz" id="header-img">
-    <div class="header-carousel" id="header-carousel">
-      <div class="header-carousel-track" id="header-carousel-track">
-        <div class="header-slide"><img src="icon-responder.svg" alt=""><img src="label-responder.svg" alt="" class="header-slide-label"></div>
-        <div class="header-slide"><img src="icon-protector.svg" alt=""><img src="label-protector.svg" alt="" class="header-slide-label"></div>
-        <div class="header-slide"><img src="icon-champion.svg" alt=""><img src="label-champion.svg" alt="" class="header-slide-label"></div>
-        <div class="header-slide"><img src="icon-visionary.svg" alt=""><img src="label-visionary.svg" alt="" class="header-slide-label"></div>
-        <div class="header-slide"><img src="icon-mentor.svg" alt=""><img src="label-mentor.svg" alt="" class="header-slide-label"></div>
+    <div class="header-icons" id="header-icons">
+      <div class="header-icon-item" data-profile="responder"><img src="icon-responder.svg" alt="Responder"></div>
+      <div class="header-icon-item" data-profile="protector"><img src="icon-protector.svg" alt="Protector"></div>
+      <div class="header-icon-item" data-profile="champion"><img src="icon-champion.svg" alt="Champion"></div>
+      <div class="header-icon-item" data-profile="visionary"><img src="icon-visionary.svg" alt="Visionary"></div>
+      <div class="header-icon-item" data-profile="mentor"><img src="icon-mentor.svg" alt="Mentor"></div>
+    </div>
+    <div class="header-label" id="header-label">
+      <div class="header-label-title" id="header-label-title">
+        <img src="header-graphic.svg" alt="The Compassion Profile Quiz">
       </div>
+      <div class="header-label-result" id="header-label-result"></div>
     </div>
   </div>
 
@@ -1219,44 +1258,80 @@ body.dark .pill-frame {
     var isDarkMode = document.body.classList.contains('dark');
     document.querySelector('.pill-frame').style.background = isDarkMode ? '#1A1A1A' : '#FAF7F2';
 
-    // Desktop: header transforms into carousel
+    // Desktop: animated icon transition
     if (window.innerWidth > 600) {
       var header = document.getElementById('quiz-header');
-      var headerCarousel = document.getElementById('header-carousel');
-      var headerTrack = document.getElementById('header-carousel-track');
+      var iconsRow = document.getElementById('header-icons');
+      var headerLabel = document.getElementById('header-label');
+      var labelTitle = document.getElementById('header-label-title');
+      var labelResult = document.getElementById('header-label-result');
       var profiles = ['responder', 'protector', 'champion', 'visionary', 'mentor'];
       var targetIndex = profiles.indexOf(profile);
+      var icons = iconsRow.querySelectorAll('.header-icon-item');
 
-      // Step 1: Fade out static header
       header.classList.add('result-mode');
+      iconsRow.classList.add('result-anim');
+      headerLabel.classList.add('result-anim');
 
-      // Step 2: After header fades, show carousel small and grow it in
-      setTimeout(function() {
-        headerCarousel.classList.add('active');
+      // Prepare the result label SVG
+      labelResult.innerHTML = '<img src="label-' + profile + '.svg" alt="' + profile + '">';
 
-        // Duplicate slides for spinning
-        var totalSpins = 2;
-        var totalSlides = (totalSpins * 5) + targetIndex;
-        var originalHTML = headerTrack.innerHTML;
-        for (var s = 0; s < totalSpins + 1; s++) {
-          headerTrack.innerHTML += originalHTML;
-        }
+      // Phase 1 (0-1.8s): Carousel shuffle — shift icons left/right via translateX
+      // We shift so the winner ends up roughly centered
+      var iconWidth = 60;
+      var gap = 12;
+      var step = iconWidth + gap;
+      // Current center is index 2. We need to shift by (targetIndex - 2) * step pixels
+      // But first do a fast "spin" effect: shift far left then ease to center
+      var spinDistance = (profiles.length * step);  // one full cycle
+      var centerOffset = (targetIndex - 2) * step;
 
-        headerTrack.style.transition = 'none';
-        headerTrack.style.transform = 'translateX(0)';
+      iconsRow.style.transition = 'none';
+      iconsRow.style.transform = 'translateX(0)';
 
-        // Step 3: Grow carousel from small to full size
+      // Start the shuffle: move left quickly (like spinning), then settle on the winner
+      requestAnimationFrame(function() {
         requestAnimationFrame(function() {
-          headerCarousel.classList.add('animate-in');
+          // Phase 1a: Quick spin left
+          iconsRow.style.transition = 'transform 0.8s cubic-bezier(0.2, 0, 0.8, 1)';
+          iconsRow.style.transform = 'translateX(' + (-spinDistance) + 'px)';
 
-          // Step 4: After grow-in completes, start spinning
+          // Phase 1b: Settle back to center the winner
           setTimeout(function() {
-            var duration = 2 + (totalSlides * 0.15);
-            headerTrack.style.transition = 'transform ' + duration + 's cubic-bezier(0.15, 0.85, 0.35, 1)';
-            headerTrack.style.transform = 'translateX(-' + (totalSlides * 100) + '%)';
+            iconsRow.style.transition = 'transform 1.0s cubic-bezier(0.25, 0.8, 0.25, 1)';
+            iconsRow.style.transform = 'translateX(' + (-centerOffset) + 'px)';
           }, 800);
+
+          // Phase 2 (2s): Fade out non-winners
+          setTimeout(function() {
+            icons.forEach(function(icon) {
+              var p = icon.getAttribute('data-profile');
+              if (p !== profile) {
+                icon.classList.add('fade-out');
+              }
+            });
+          }, 2000);
+
+          // Phase 3 (2.5s): Grow winner, crossfade label
+          setTimeout(function() {
+            // Remove translateX since losers are gone and flex will re-center
+            iconsRow.style.transition = 'transform 0.5s ease';
+            iconsRow.style.transform = 'translateX(0)';
+
+            // Grow winner icon
+            icons.forEach(function(icon) {
+              var p = icon.getAttribute('data-profile');
+              if (p === profile) {
+                icon.classList.add('winner');
+              }
+            });
+
+            // Crossfade the label
+            labelTitle.style.opacity = '0';
+            labelResult.classList.add('visible');
+          }, 2500);
         });
-      }, 400);
+      });
     }
 
     window.scrollTo({ top: 0, behavior: 'smooth' });
