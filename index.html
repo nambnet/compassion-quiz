@@ -528,16 +528,27 @@ body.dark .progress-wrap {
   display: block;
 }
 
-/* Body-level ghost icon — scaled to full viewport width, overflow hidden */
-#body-ghost {
+/* Result background: colored layer + ghost icon on top */
+#result-bg {
   display: none;
   position: fixed;
   top: 0;
   left: 0;
   width: 100vw;
   height: 100vh;
-  pointer-events: none;
   z-index: 0;
+}
+
+#result-bg.active {
+  display: block;
+}
+
+#body-ghost {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
   overflow: hidden;
 }
 
@@ -548,10 +559,6 @@ body.dark .progress-wrap {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-}
-
-#body-ghost.active {
-  display: block;
 }
 
 .pill-frame {
@@ -659,7 +666,9 @@ body.dark .pill-frame {
 
 <button class="dark-toggle" id="dark-toggle" aria-label="Toggle dark mode">&#9790;</button>
 
-<div id="body-ghost"><img id="body-ghost-img" src="" alt=""></div>
+<div id="result-bg">
+  <div id="body-ghost"><img id="body-ghost-img" src="" alt=""></div>
+</div>
 
 <div class="pill-frame">
   <div class="pill-border">
@@ -1087,13 +1096,13 @@ body.dark .pill-frame {
     var resultEl = document.getElementById('result-' + profile);
     if (resultEl) resultEl.classList.add('active');
 
-    // Set body background color and show ghost icon
-    document.body.style.backgroundColor = resultBgColors[profile] || '#7C92AE';
+    // Show colored background + ghost icon
+    var resultBg = document.getElementById('result-bg');
+    resultBg.style.backgroundColor = resultBgColors[profile] || '#7C92AE';
+    resultBg.classList.add('active');
+    document.getElementById('body-ghost-img').src = 'ghost-' + profile + '.svg';
     // Force pill interior to cream regardless of dark mode
     document.querySelector('.pill-frame').style.background = '#FAF7F2';
-    var ghost = document.getElementById('body-ghost');
-    document.getElementById('body-ghost-img').src = 'ghost-' + profile + '.svg';
-    ghost.classList.add('active');
 
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
