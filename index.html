@@ -798,8 +798,8 @@ body.dark .pill-frame {
 .header-icon-item.winner {
   position: relative;
   z-index: 2;
-  width: 180px;
-  height: 180px;
+  width: 360px;
+  height: 360px;
   margin-bottom: -10px;
 }
 
@@ -1311,6 +1311,8 @@ body.dark .pill-frame {
 
     // Desktop: animated icon transition
     if (window.innerWidth > 600) {
+      // Hide result content until winner icon reveal
+      if (resultEl) { resultEl.style.opacity = '0'; resultEl.style.transition = 'opacity 0.8s ease'; }
       var header = document.getElementById('quiz-header');
       var iconsRow = document.getElementById('header-icons');
       var headerLabel = document.getElementById('header-label');
@@ -1390,6 +1392,8 @@ body.dark .pill-frame {
 
             labelTitle.style.opacity = '0';
             labelResult.classList.add('visible');
+            // Fade in result content with the winner reveal
+            if (resultEl) resultEl.style.opacity = '1';
           }, 4200);
         });
       });
