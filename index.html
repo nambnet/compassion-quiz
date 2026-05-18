@@ -1324,11 +1324,14 @@ body.dark .pill-frame {
     resultBg.style.backgroundImage = "url('bg-" + profile + ".png')";
     var isDarkMode = document.body.classList.contains('dark');
 
+    // Mark header as result mode (used by mobile CSS to hide it)
+    var header = document.getElementById('quiz-header');
+    header.classList.add('result-mode');
+
     // Desktop: animated icon transition
     if (window.innerWidth > 600) {
       // Hide result content until winner icon reveal
       if (resultEl) { resultEl.style.opacity = '0'; resultEl.style.transition = 'opacity 0.8s ease'; }
-      var header = document.getElementById('quiz-header');
       var iconsRow = document.getElementById('header-icons');
       var headerLabel = document.getElementById('header-label');
       var labelTitle = document.getElementById('header-label-title');
@@ -1337,7 +1340,6 @@ body.dark .pill-frame {
       var targetIndex = profiles.indexOf(profile);
       var icons = iconsRow.querySelectorAll('.header-icon-item');
 
-      header.classList.add('result-mode');
       iconsRow.classList.add('result-anim');
       headerLabel.classList.add('result-anim');
 
