@@ -5,6 +5,15 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Compassion Profile Quiz | Send Relief</title>
 <meta name="description" content="How God Shaped You to Care for a Broken World. Take the quiz to discover your compassion profile.">
+<meta property="og:title" content="Compassion Profile Quiz | Send Relief">
+<meta property="og:description" content="How God Shaped You to Care for a Broken World. Take the quiz to discover your compassion profile.">
+<meta property="og:image" content="https://quiz.sendrelief.org/result-responder.jpg">
+<meta property="og:url" content="https://quiz.sendrelief.org">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Compassion Profile Quiz | Send Relief">
+<meta name="twitter:description" content="How God Shaped You to Care for a Broken World. Take the quiz to discover your compassion profile.">
+<meta name="twitter:image" content="https://quiz.sendrelief.org/result-responder.jpg">
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@400;500;600&display=swap');
 
@@ -653,6 +662,62 @@ body.dark .pill-frame {
   margin-bottom: 6px;
 }
 
+/* Share buttons */
+.share-section {
+  margin-top: 32px;
+  text-align: center;
+}
+.share-section h3 {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.3rem;
+  font-weight: 700;
+  margin-bottom: 16px;
+  text-align: center;
+}
+.share-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+.share-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 10px 18px;
+  border: 2px solid var(--navy);
+  border-radius: 50px;
+  background: transparent;
+  color: var(--navy);
+  font-family: 'Inter', sans-serif;
+  font-size: 0.85rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+  text-decoration: none;
+}
+.share-btn:hover {
+  background: var(--navy);
+  color: var(--cream);
+}
+.share-btn svg {
+  width: 16px;
+  height: 16px;
+  fill: currentColor;
+}
+body.dark .share-btn {
+  border-color: var(--cream);
+  color: var(--cream);
+}
+body.dark .share-btn:hover {
+  background: var(--cream);
+  color: var(--navy);
+}
+.share-btn.copied {
+  background: var(--navy);
+  color: var(--cream);
+}
+
 /* Header icon row */
 .quiz-header {
   position: relative;
@@ -1051,6 +1116,10 @@ body.dark .pill-frame {
         <li>The tension you may be carrying and how to bring it before God</li>
         <li>Your next step for living this out right now</li>
       </ul>
+      <div class="share-section">
+        <h3>Share your results</h3>
+        <div class="share-buttons" data-profile="responder" data-title="I'm a Responder — Practical, Attentive, Thoughtful"></div>
+      </div>
     </div>
   </div>
 
@@ -1067,6 +1136,10 @@ body.dark .pill-frame {
         <li>The tension you may be carrying and how to bring it before God</li>
         <li>Your next step for living this out right now</li>
       </ul>
+      <div class="share-section">
+        <h3>Share your results</h3>
+        <div class="share-buttons" data-profile="protector" data-title="I'm a Protector — Brave, Loyal, Steadfast"></div>
+      </div>
     </div>
   </div>
 
@@ -1083,6 +1156,10 @@ body.dark .pill-frame {
         <li>The tension you may be carrying and how to bring it before God</li>
         <li>Your next step for living this out right now</li>
       </ul>
+      <div class="share-section">
+        <h3>Share your results</h3>
+        <div class="share-buttons" data-profile="champion" data-title="I'm a Champion — Expressive, Attuned, Relational"></div>
+      </div>
     </div>
   </div>
 
@@ -1099,6 +1176,10 @@ body.dark .pill-frame {
         <li>The tension you may be carrying and how to bring it before God</li>
         <li>Your next step for living this out right now</li>
       </ul>
+      <div class="share-section">
+        <h3>Share your results</h3>
+        <div class="share-buttons" data-profile="visionary" data-title="I'm a Visionary — Strategic, Persistent, Hopeful"></div>
+      </div>
     </div>
   </div>
 
@@ -1115,6 +1196,10 @@ body.dark .pill-frame {
         <li>The tension you may be carrying and how to bring it before God</li>
         <li>Your next step for living this out right now</li>
       </ul>
+      <div class="share-section">
+        <h3>Share your results</h3>
+        <div class="share-buttons" data-profile="mentor" data-title="I'm a Mentor — Nurturing, Wise, Intentional"></div>
+      </div>
     </div>
   </div>
 
@@ -1449,11 +1534,81 @@ body.dark .pill-frame {
     darkBtn.innerHTML = document.body.classList.contains('dark') ? '&#9788;' : '&#9790;';
   }
 
+  // Populate share buttons
+  document.querySelectorAll('.share-buttons').forEach(function(container) {
+    var profile = container.getAttribute('data-profile');
+    var shareTitle = container.getAttribute('data-title');
+    var shareUrl = 'https://quiz.sendrelief.org/?result=' + profile;
+    var shareText = shareTitle + '. Take the Compassion Profile Quiz to discover yours!';
+
+    // Facebook
+    var fb = document.createElement('a');
+    fb.className = 'share-btn';
+    fb.href = 'https://www.facebook.com/sharer/sharer.php?u=' + encodeURIComponent(shareUrl);
+    fb.target = '_blank';
+    fb.rel = 'noopener';
+    fb.innerHTML = '<svg viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>Facebook';
+    container.appendChild(fb);
+
+    // X / Twitter
+    var tw = document.createElement('a');
+    tw.className = 'share-btn';
+    tw.href = 'https://twitter.com/intent/tweet?text=' + encodeURIComponent(shareText) + '&url=' + encodeURIComponent(shareUrl);
+    tw.target = '_blank';
+    tw.rel = 'noopener';
+    tw.innerHTML = '<svg viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>X';
+    container.appendChild(tw);
+
+    // Copy link
+    var copy = document.createElement('button');
+    copy.className = 'share-btn';
+    copy.innerHTML = '<svg viewBox="0 0 24 24"><path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/></svg>Copy Link';
+    copy.addEventListener('click', function() {
+      navigator.clipboard.writeText(shareUrl).then(function() {
+        copy.classList.add('copied');
+        copy.querySelector('svg').nextSibling.textContent = 'Copied!';
+        setTimeout(function() {
+          copy.classList.remove('copied');
+          copy.querySelector('svg').nextSibling.textContent = 'Copy Link';
+        }, 2000);
+      });
+    });
+    container.appendChild(copy);
+
+    // Native share (mobile)
+    if (navigator.share) {
+      var native = document.createElement('button');
+      native.className = 'share-btn';
+      native.innerHTML = '<svg viewBox="0 0 24 24"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81 1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9c-1.66 0-3 1.34-3 3s1.34 3 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.16c-.05.21-.08.43-.08.65 0 1.61 1.31 2.92 2.92 2.92 1.61 0 2.92-1.31 2.92-2.92s-1.31-2.92-2.92-2.92z"/></svg>Share';
+      native.addEventListener('click', function() {
+        navigator.share({ title: shareTitle, text: shareText, url: shareUrl });
+      });
+      container.appendChild(native);
+    }
+  });
+
+  // Update OG meta tags when showing a result
+  function updateOGTags(profile, title) {
+    var baseUrl = 'https://quiz.sendrelief.org';
+    var img = baseUrl + '/result-' + profile + '.jpg';
+    var url = baseUrl + '/?result=' + profile;
+    document.querySelector('meta[property="og:title"]').setAttribute('content', title);
+    document.querySelector('meta[property="og:description"]').setAttribute('content', title + '. Take the Compassion Profile Quiz to discover yours!');
+    document.querySelector('meta[property="og:image"]').setAttribute('content', img);
+    document.querySelector('meta[property="og:url"]').setAttribute('content', url);
+    document.querySelector('meta[name="twitter:title"]').setAttribute('content', title);
+    document.querySelector('meta[name="twitter:description"]').setAttribute('content', title + '. Take the Compassion Profile Quiz to discover yours!');
+    document.querySelector('meta[name="twitter:image"]').setAttribute('content', img);
+  }
+
   // Initialize — check for ?result= param to jump to results
   var urlParams = new URLSearchParams(window.location.search);
   var debugResult = urlParams.get('result');
   if (debugResult && resultBgColors[debugResult]) {
     showResult(debugResult);
+    // Update OG tags for direct result links
+    var shareContainer = document.querySelector('#result-' + debugResult + ' .share-buttons');
+    if (shareContainer) updateOGTags(debugResult, shareContainer.getAttribute('data-title'));
   } else {
     showStep(1);
   }
