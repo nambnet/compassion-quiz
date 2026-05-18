@@ -1361,15 +1361,24 @@ body.dark .pill-frame {
           iconsRow.style.transition = 'transform 3s cubic-bezier(0.1, 0, 0.2, 1)';
           iconsRow.style.transform = 'translateX(' + (-totalDistance) + 'px)';
 
-          // Phase 2 (3.2s): Remove clones, fade out non-winners
+          // Phase 2 (3.2s): Remove clones, center winner, fade out others
           setTimeout(function() {
-            // Remove all clones and settle
+            // Remove all clones
             iconsRow.querySelectorAll('.clone').forEach(function(c) { c.remove(); });
-            iconsRow.style.transition = 'none';
-            iconsRow.style.transform = 'translateX(0)';
-            iconsRow.style.justifyContent = 'center';
             iconsRow.classList.remove('spinning');
             iconsRow.classList.add('settled');
+
+            // Snap row to flex-start so we can position the winner precisely
+            iconsRow.style.justifyContent = 'flex-start';
+            iconsRow.style.transition = 'none';
+
+            // Calculate offset to center the winner icon in the row
+            var rowWidth = iconsRow.offsetWidth;
+            var winnerLeft = targetIndex * iconWidth; // left edge of winner in the row
+            var winnerCenter = winnerLeft + (iconWidth / 2);
+            var centerOffset = (rowWidth / 2) - winnerCenter;
+            iconsRow.style.transform = 'translateX(' + centerOffset + 'px)';
+
             // Reveal result background
             pillFrame.style.background = isDarkMode ? '#1A1A1A' : '#FAF7F2';
             resultBg.classList.add('active');
@@ -1391,6 +1400,11 @@ body.dark .pill-frame {
                 icon.classList.add('winner');
               }
             });
+
+            // Re-center now that winner is larger
+            iconsRow.style.transition = 'transform 0.6s cubic-bezier(0.4, 0, 0.2, 1)';
+            iconsRow.style.justifyContent = 'center';
+            iconsRow.style.transform = 'translateX(0)';
 
             labelTitle.style.opacity = '0';
             labelResult.classList.add('visible');
