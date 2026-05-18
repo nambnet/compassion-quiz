@@ -1354,14 +1354,16 @@ body.dark .header-label-result img {
   var firstInput = document.getElementById('cpq-first');
   var lastInput = document.getElementById('cpq-last');
   var emailInput = document.getElementById('cpq-email');
+  var consentBox = document.getElementById('cpq-consent');
 
   function validateForm() {
-    var valid = firstInput.value.trim() && lastInput.value.trim() && emailInput.value.trim() && emailInput.value.indexOf('@') > 0;
+    var valid = firstInput.value.trim() && lastInput.value.trim() && emailInput.value.trim() && emailInput.value.indexOf('@') > 0 && consentBox.checked;
     btnSubmit.disabled = !valid;
   }
 
   firstInput.addEventListener('input', validateForm);
   lastInput.addEventListener('input', validateForm);
+  consentBox.addEventListener('change', validateForm);
   emailInput.addEventListener('input', validateForm);
 
   // Submit
