@@ -1586,7 +1586,7 @@ body.dark .header-label-result img {
   document.querySelectorAll('.share-buttons').forEach(function(container) {
     var profile = container.getAttribute('data-profile');
     var shareTitle = container.getAttribute('data-title');
-    var shareUrl = 'https://quiz.sendrelief.org/';
+    var shareUrl = 'https://quiz.sendrelief.org/?result=' + profile + '&shared=1';
     var shareText = shareTitle + '. Take the Compassion Profile Quiz to discover yours!';
 
     // Facebook (desktop only — mobile uses native share)
@@ -1650,7 +1650,8 @@ body.dark .header-label-result img {
   // Initialize — check for ?result= param to jump to results
   var urlParams = new URLSearchParams(window.location.search);
   var debugResult = urlParams.get('result');
-  if (debugResult && resultBgColors[debugResult]) {
+  var isShared = urlParams.get('shared');
+  if (debugResult && resultBgColors[debugResult] && !isShared) {
     showResult(debugResult);
     // Update OG tags for direct result links
     var shareContainer = document.querySelector('#result-' + debugResult + ' .share-buttons');
