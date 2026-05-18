@@ -813,6 +813,24 @@ body.dark .pill-frame {
   }
   .result-graphic-mobile {
     display: block;
+    border-radius: 0;
+    margin: 0 -20px 24px;
+    width: calc(100% + 40px);
+    max-width: none;
+    /* Pull graphic up into the pill cap so border-radius crops it */
+    margin-top: calc(-120px - 25cqw);
+    position: relative;
+    z-index: 0;
+  }
+  /* Thick cream outline on pill for mobile results — creates the arch crop */
+  body.result-showing .pill-border-inner {
+    border: 10px solid var(--cream);
+  }
+  body.result-showing .pill-border-outer {
+    display: none;
+  }
+  body.dark.result-showing .pill-border-inner {
+    border-color: #1A1A1A;
   }
 }
 
