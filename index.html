@@ -795,13 +795,11 @@ body.dark .pill-frame {
               height 0.6s cubic-bezier(0.4, 0, 0.2, 1) 0.2s;
 }
 
-/* Animation: winner grows — positioned so z-index lifts it above the label */
+/* Animation: winner grows in place via scale (no layout reflow) */
 .header-icon-item.winner {
   position: relative;
   z-index: 2;
-  width: 360px;
-  height: 360px;
-  margin-bottom: -10px;
+  transform: scale(6);
 }
 
 /* Hide static result graphic on desktop when header animates */
@@ -1345,6 +1343,11 @@ body.dark .pill-frame {
         });
       }
 
+      // Identify the landing icon (the one visible after 3 full cycles)
+      var allIcons = iconsRow.querySelectorAll('.header-icon-item');
+      var landingIndex = (3 * profiles.length) + targetIndex;
+      var landingIcon = allIcons[landingIndex];
+
       // Calculate spin distance: 3 full cycles + land on winner
       var setWidth = profiles.length * iconWidth;
       var totalDistance = (setWidth * 3) + (targetIndex * iconWidth);
@@ -1361,56 +1364,41 @@ body.dark .pill-frame {
           iconsRow.style.transition = 'transform 3s cubic-bezier(0.1, 0, 0.2, 1)';
           iconsRow.style.transform = 'translateX(' + (-totalDistance) + 'px)';
 
-          // Phase 2 (3.2s): Remove clones, center winner, fade out others
+          // Phase 2 (3.2s): Slide row to center landing icon, fade out others
           setTimeout(function() {
-            // Remove all clones
-            iconsRow.querySelectorAll('.clone').forEach(function(c) { c.remove(); });
             iconsRow.classList.remove('spinning');
             iconsRow.classList.add('settled');
 
-            // Snap row to flex-start so we can position the winner precisely
-            iconsRow.style.justifyContent = 'flex-start';
-            iconsRow.style.transition = 'none';
+            // Use actual position to calculate centering offset
+            var landingRect = landingIcon.getBoundingClientRect();
+            var rowRect = iconsRow.parentElement.getBoundingClientRect();
+            var landingCenterX = landingRect.left + landingRect.width / 2;
+            var rowCenterX = rowRect.left + rowRect.width / 2;
+            var shift = rowCenterX - landingCenterX;
+            var newTranslateX = -totalDistance + shift;
 
-            // Calculate offset to center the winner icon in the row
-            var rowWidth = iconsRow.offsetWidth;
-            var winnerLeft = targetIndex * iconWidth; // left edge of winner in the row
-            var winnerCenter = winnerLeft + (iconWidth / 2);
-            var centerOffset = (rowWidth / 2) - winnerCenter;
-            iconsRow.style.transform = 'translateX(' + centerOffset + 'px)';
+            iconsRow.style.transition = 'transform 0.8s cubic-bezier(0.4, 0, 0.2, 1)';
+            iconsRow.style.transform = 'translateX(' + newTranslateX + 'px)';
 
             // Reveal result background
             pillFrame.style.background = isDarkMode ? '#1A1A1A' : '#FAF7F2';
             resultBg.classList.add('active');
 
-            // Fade out non-winners (original refs still valid)
-            icons.forEach(function(icon) {
-              var p = icon.getAttribute('data-profile');
-              if (p !== profile) {
-                icon.classList.add('fade-out');
-              }
+            // Fade out everything except the landing icon
+            allIcons.forEach(function(icon, i) {
+              if (i !== landingIndex) icon.classList.add('fade-out');
             });
           }, 3200);
 
-          // Phase 3 (4.2s): Grow winner, crossfade label
+          // Phase 3 (4.5s): Scale up landing icon, crossfade label
           setTimeout(function() {
-            icons.forEach(function(icon) {
-              var p = icon.getAttribute('data-profile');
-              if (p === profile) {
-                icon.classList.add('winner');
-              }
-            });
-
-            // Re-center now that winner is larger
-            iconsRow.style.transition = 'transform 0.6s cubic-bezier(0.4, 0, 0.2, 1)';
-            iconsRow.style.justifyContent = 'center';
-            iconsRow.style.transform = 'translateX(0)';
+            landingIcon.classList.add('winner');
 
             labelTitle.style.opacity = '0';
             labelResult.classList.add('visible');
             // Fade in result content with the winner reveal
             if (resultEl) resultEl.style.opacity = '1';
-          }, 4200);
+          }, 4500);
         });
       });
     } else {
