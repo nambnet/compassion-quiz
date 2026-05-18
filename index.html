@@ -785,14 +785,7 @@ body.dark .pill-frame {
 /* Animation: fading out losers */
 .header-icon-item.fade-out {
   opacity: 0;
-  width: 0;
-  height: 0;
-  margin: 0;
-  padding: 0;
-  overflow: hidden;
-  transition: opacity 0.5s ease,
-              width 0.6s cubic-bezier(0.4, 0, 0.2, 1) 0.2s,
-              height 0.6s cubic-bezier(0.4, 0, 0.2, 1) 0.2s;
+  pointer-events: none;
 }
 
 /* Animation: winner grows in place via scale (no layout reflow) */
