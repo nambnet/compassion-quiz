@@ -1358,16 +1358,29 @@ body.dark .header-label-result img {
     btnSubmit.disabled = true;
     btnSubmit.innerHTML = '<span class="spinner"></span>Submitting...';
 
-    // Calculate winner
+    // Calculate winner (Q1-Q5 scored; Q7 excluded — aspirational, not personality)
     var tallies = { responder: 0, protector: 0, champion: 0, visionary: 0, mentor: 0 };
-    var scoredKeys = ['q1', 'q2', 'q3', 'q4', 'q5', 'q7'];
+    var scoredKeys = ['q1', 'q2', 'q3', 'q4', 'q5'];
     for (var i = 0; i < scoredKeys.length; i++) {
       var v = answers[scoredKeys[i]];
       if (v && tallies.hasOwnProperty(v)) tallies[v]++;
     }
-    var winner = 'responder', max = 0;
+    var winner = '', max = 0;
     for (var key in tallies) {
       if (tallies[key] > max) { max = tallies[key]; winner = key; }
+    }
+    // Tiebreaker: first instinct wins (earliest question answer)
+    if (max > 0) {
+      var tied = [];
+      for (var key in tallies) {
+        if (tallies[key] === max) tied.push(key);
+      }
+      if (tied.length > 1) {
+        for (var i = 0; i < scoredKeys.length; i++) {
+          var v = answers[scoredKeys[i]];
+          if (tied.indexOf(v) > -1) { winner = v; break; }
+        }
+      }
     }
 
     // Submit to HubSpot Forms API
