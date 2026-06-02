@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>You're Entered! | Send Relief</title>
+<meta name="description" content="You're entered to win the Away suitcase from Send Relief at TGCW26.">
+<link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
+<link rel="icon" type="image/x-icon" href="favicon.ico">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta property="og:title" content="You're Entered! | Send Relief">
+<meta property="og:description" content="You're entered to win the Away suitcase from Send Relief at TGCW26.">
+<meta property="og:image" content="https://quiz.sendrelief.org/og-share.jpg">
+<meta property="og:url" content="https://quiz.sendrelief.org/entered">
+<meta property="og:type" content="website">
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@400;500;600&display=swap');
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --navy: #1B2A4A;
+  --cream: #FAF7F2;
+  --champion-bg: #C4969A;
+  --champion-dark: #6B3A3F;
+  --transition: 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+body {
+  font-family: 'Inter', sans-serif;
+  background: var(--cream);
+  color: var(--navy);
+  min-height: 100vh;
+  line-height: 1.6;
+}
+
+body::after {
+  content: '';
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: url('canvas-texture.jpg') repeat;
+  background-size: 1800px;
+  opacity: 0.5;
+  pointer-events: none;
+  z-index: 9999;
+  mix-blend-mode: multiply;
+}
+
+.pill-frame {
+  --pill-color: var(--champion-bg);
+  max-width: 800px;
+  margin: 24px auto;
+  position: relative;
+  min-height: calc(100vh - 48px);
+  padding: 0;
+  container-type: inline-size;
+}
+
+.pill-border { position: absolute; inset: 0; pointer-events: none; z-index: 1; }
+.pill-border-inner { position: absolute; top: 0; left: 0; right: 0; bottom: 0; border: 5px solid var(--pill-color); border-radius: 400px; }
+.pill-border-outer { position: absolute; top: -12px; left: -12px; right: -12px; bottom: -12px; border: 2.5px solid var(--pill-color); border-radius: 412px; }
+
+.page-container {
+  max-width: 640px;
+  margin: 0 auto;
+  padding: 40px 40px 60px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: calc(100vh - 48px);
+  text-align: center;
+  gap: 28px;
+}
+
+.sr-logo {
+  width: 120px;
+  position: fixed;
+  top: 20px;
+  left: 20px;
+  z-index: 10000;
+}
+
+.confetti { font-size: 2.4rem; line-height: 1; }
+
+h1 {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 2.2rem;
+  font-weight: 700;
+  color: var(--navy);
+  line-height: 1.2;
+}
+
+.subtitle {
+  font-size: 1.05rem;
+  color: var(--navy);
+  opacity: 0.8;
+  max-width: 420px;
+}
+
+.suitcase-img {
+  width: 280px;
+  max-width: 80%;
+  border-radius: 16px;
+  box-shadow: 0 8px 32px rgba(27, 42, 74, 0.12);
+}
+
+.winner-note {
+  font-size: 0.88rem;
+  color: var(--navy);
+  opacity: 0.6;
+  max-width: 380px;
+}
+
+.divider {
+  width: 60px;
+  height: 2px;
+  background: var(--champion-bg);
+  border: none;
+}
+
+.quiz-cta-heading {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: var(--navy);
+  line-height: 1.3;
+}
+
+.quiz-cta-text {
+  font-size: 0.95rem;
+  color: var(--navy);
+  opacity: 0.75;
+  max-width: 400px;
+}
+
+.btn-quiz {
+  display: inline-block;
+  padding: 14px 40px;
+  background: var(--navy);
+  color: #fff;
+  font-family: 'Inter', sans-serif;
+  font-size: 1rem;
+  font-weight: 600;
+  text-decoration: none;
+  border-radius: 50px;
+  transition: transform var(--transition), box-shadow var(--transition);
+  position: relative;
+  z-index: 10;
+}
+
+.btn-quiz:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(27, 42, 74, 0.25);
+}
+
+@media (max-width: 600px) {
+  .pill-frame { margin: 12px; min-height: calc(100vh - 24px); }
+  .pill-border-inner { border-radius: 200px; }
+  .pill-border-outer { top: -8px; left: -8px; right: -8px; bottom: -8px; border-radius: 208px; }
+  .page-container { padding: 80px 24px 40px; }
+  h1 { font-size: 1.8rem; }
+  .suitcase-img { width: 220px; }
+  .sr-logo { width: 90px; top: 14px; left: 14px; }
+}
+</style>
+</head>
+<body>
+
+<a href="https://sendrelief.org"><img src="sr-logo.png" alt="Send Relief" class="sr-logo"></a>
+
+<div class="pill-frame">
+  <div class="pill-border">
+    <div class="pill-border-inner"></div>
+    <div class="pill-border-outer"></div>
+  </div>
+
+  <div class="page-container">
+    <div class="confetti">🎉</div>
+    <h1>Let's Go Girl!</h1>
+    <p class="subtitle">You're entered to win the Away suitcase.</p>
+
+    <img
+      src="https://www.awaytravel.com/cdn/shop/files/PDP_PC_Blush_Pink_CAR_02.jpg?v=1773689166"
+      alt="Pink Away Carry-On Suitcase"
+      class="suitcase-img"
+    >
+
+    <p class="winner-note">The winner will be contacted on the last day of the conference via text message.</p>
+
+    <hr class="divider">
+
+    <p class="quiz-cta-heading">While you're here&hellip;</p>
+    <p class="quiz-cta-text">Discover how God has uniquely shaped your compassion. It only takes two minutes.</p>
+
+    <a href="https://quiz.sendrelief.org" class="btn-quiz">Take the Quiz</a>
+  </div>
+</div>
+
+</body>
+</html>
