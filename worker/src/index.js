@@ -26,7 +26,7 @@ const PROFILES = {
     image: "https://quiz.sendrelief.org/result-visionary.jpg",
   },
   mentor: {
-    title: "I'm a Guide — Nurturing, Wise, Intentional",
+    title: "I'm a Guide — Intentional, Discerning, Steady",
     image: "https://quiz.sendrelief.org/result-mentor.jpg",
   },
 };
@@ -91,12 +91,37 @@ class TitleRewriter {
 
 async function fetchOrigin(url, request) {
   // Build a request to the GitHub Pages origin
-  const originUrl = "https://nambnet.github.io/compassion-quiz" + url.pathname;
-  return fetch(originUrl, {
+  // GitHub Pages redirects sub-paths to the CNAME domain, which loops back
+  // to this worker. Use redirect: "manual" and retry with .html extension.
+  let pathname = url.pathname;
+  const fetchOpts = {
     method: request.method,
+    redirect: "manual",
     headers: {
       "User-Agent": request.headers.get("User-Agent") || "Mozilla/5.0",
       "Accept": request.headers.get("Accept") || "text/html",
     },
-  });
+  };
+
+  const originBase = "https://nambnet.github.io/compassion-quiz";
+  let response = await fetch(originBase + pathname, fetchOpts);
+
+  // If GitHub Pages returns a redirect (CNAME), try with .html extension
+  if (response.status >= 300 && response.status < 400 && pathname !== "/" && !pathname.includes(".")) {
+    response = await fetch(originBase + pathname + ".html", fetchOpts);
+  }
+
+  // If still a redirect (e.g. CNAME redirect on the .html path), fetch the Location directly
+  if (response.status >= 300 && response.status < 400) {
+    const location = response.headers.get("Location");
+    if (location) {
+      // Rewrite CNAME redirects back to the origin to avoid loops
+      const redirectUrl = new URL(location);
+      if (redirectUrl.hostname === "quiz.sendrelief.org") {
+        response = await fetch(originBase + redirectUrl.pathname, fetchOpts);
+      }
+    }
+  }
+
+  return response;
 }
