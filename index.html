@@ -17,6 +17,7 @@
 <meta name="twitter:title" content="Compassion Profile Quiz | Send Relief">
 <meta name="twitter:description" content="How God Shaped You to Care for a Broken World. Take the quiz to discover your compassion profile.">
 <meta name="twitter:image" content="https://quiz.sendrelief.org/og-share.jpg">
+<script src="https://cdn.usefathom.com/script.js" data-site="NVGJQXEX" defer></script>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@400;500;600&display=swap');
 
@@ -1279,6 +1280,7 @@ body.dark .header-label-result img {
 
     if (n === 8) {
       btnNext.style.display = 'none';
+      if (window.fathom) fathom.trackEvent('CPQ Form Viewed');
     } else {
       btnNext.style.display = '';
       updateNextState();
@@ -1357,6 +1359,7 @@ body.dark .header-label-result img {
     if (btnSubmit.disabled) return;
     btnSubmit.disabled = true;
     btnSubmit.innerHTML = '<span class="spinner"></span>Submitting...';
+    if (window.fathom) fathom.trackEvent('CPQ Form Submitted');
 
     // Calculate winner (Q1-Q5 scored; Q7 excluded — aspirational, not personality)
     var tallies = { responder: 0, protector: 0, champion: 0, visionary: 0, mentor: 0 };
@@ -1432,6 +1435,10 @@ body.dark .header-label-result img {
   };
 
   function showResult(profile) {
+    if (window.fathom) {
+      fathom.trackEvent('CPQ Result Shown');
+      fathom.trackEvent('CPQ Result: ' + profile.charAt(0).toUpperCase() + profile.slice(1));
+    }
     // Hide quiz UI
     steps.forEach(function(s) { s.classList.remove('active'); });
     navRow.style.display = 'none';
